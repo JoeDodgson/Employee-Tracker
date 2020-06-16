@@ -14,3 +14,13 @@ const connection = mysql.createConnection({
     password: "",
     database: "employeetracker"
 })
+
+// Create the initial connection
+function openConnection() {
+    connection.connect(function(err) {
+        if (err) console.error(err);
+        console.log("connected as id " + connection.threadId);
+    })
+}
+
+openConnection();

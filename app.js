@@ -116,7 +116,7 @@ async function viewEmployeesByDepartment() {
     
         // Display list of employees in the selected department using cTable formatting
         const employeesInDepartmentTable = cTable.getTable(employeesInDepartment);
-        console.log("Full list of employees:\n" + employeesInDepartmentTable);
+        console.log(`List of employees in the ${department} department:\n\n` + employeesInDepartmentTable);
 
         selectAction();
     }
@@ -126,9 +126,22 @@ async function viewEmployeesByDepartment() {
 }
 
 async function viewEmployeesByManager() {
-    console.log("viewEmployeesByManager function" );
-
-    selectAction();
+    try {
+        // Query the database to return a list of managers
+        
+        // Generate a question using the returned managers
+        
+        // Ask the user to select a manager
+        
+        // Query the database for all employees who work for the selected manager
+        
+        // Display list of employees who work for the selected manager using cTable formatting
+        
+        selectAction();
+    }
+    catch {
+        console.log("ERROR - app.js - viewEmployeesByManager(): " + error);        
+    }
 }
 
 async function addEmployee() {

@@ -132,7 +132,8 @@ async function viewEmployeesByManager() {
         const managersList = managersListData.map(manager => manager.name);
 
         // Generate a question using the returned managers
-        
+        Questions.question3.choices = managersList;
+
         // Ask the user to select a manager
         
         // Query the database for all employees who work for the selected manager

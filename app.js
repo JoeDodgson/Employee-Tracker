@@ -111,6 +111,7 @@ async function viewEmployeesByDepartment() {
         Questions.question2.choices = departments;
 
         // Ask the user to select a department
+        const { department } = await inquirer.prompt(Questions.question2.returnString());
     
         // Query the database for all employees using the selected department
     

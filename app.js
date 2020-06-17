@@ -106,11 +106,10 @@ async function viewEmployeesByDepartment() {
         // Query the database to return a list of departments
         const departmentsData = await queryAsync("SELECT name FROM department;");
         const departments = departmentsData.map(department => department.name);
-        console.log(departments);
     
-
         // Generate a question using the returned departments
-    
+        Questions.question2.choices = departments;
+
         // Ask the user to select a department
     
         // Query the database for all employees using the selected department

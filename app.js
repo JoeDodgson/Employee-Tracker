@@ -3,8 +3,7 @@ const inquirer = require("inquirer");
 const cTable = require("console.table");
 const mysql = require("mysql");
 const questions = require("./questions");
-const ChoiceQuestion = questions.ChoiceQuestion;
-const PromptQuestion = questions.PromptQuestion;
+const Questions = questions.Questions;
 const util = require("util");
 const { table, log } = require("console");
 
@@ -51,6 +50,14 @@ async function viewAllEmployees() {
     }
 }
 
-function selectAction() {
+async function selectAction() {
+    try {
+        // What would you like to do?
+        const { action } = await inquirer.prompt(Questions.question1.returnString());
+        
 
+    }
+    catch {
+        console.log(error);
+    }
 }

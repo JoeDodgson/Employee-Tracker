@@ -99,7 +99,7 @@ async function selectAction() {
         }
     }
     catch {
-        console.log(error);
+        console.log("ERROR - app.js - selectAction(): " + error);
     }
 }
 

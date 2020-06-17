@@ -223,7 +223,8 @@ async function removeEmployee() {
         const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
         const employeesList = employeesListData.map(employee => employee.name);
 
-        // Generate a question using the returned employees    
+        // Generate a question using the returned employees
+        Questions.question5a.choices = employeesList;
 
         // Prompts user to select an employee
 

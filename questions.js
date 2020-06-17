@@ -41,6 +41,7 @@ Questions.question4a = new PromptQuestion("Enter the new employee's first name",
 Questions.question4b = new PromptQuestion("Enter employee's last name", "lastName");
 Questions.question4c = new ChoiceQuestion("Select a role", "role", []);
 Questions.question4d = Questions.question3;
+Questions.question5a = new ChoiceQuestion("Select an employee to remove", "employee", []);
 
 // Export classes
 module.exports = {

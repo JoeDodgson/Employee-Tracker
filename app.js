@@ -55,9 +55,89 @@ async function selectAction() {
         // What would you like to do?
         const { action } = await inquirer.prompt(Questions.question1.returnString());
         
-
+        // Handle the various cases - do different functions
+        switch(action) {
+            case Questions.question1.choices[0]:
+                viewAllEmployees();
+            case Questions.question1.choices[1]:
+                viewEmployeesByDepartment();
+            case Questions.question1.choices[2]:
+                viewEmployeesByManager();
+            case Questions.question1.choices[3]:
+                addEmployee();
+            case Questions.question1.choices[4]:
+                removeEmployee();
+            case Questions.question1.choices[5]:
+                updateEmployeeRole();
+            case Questions.question1.choices[6]:
+                updateEmployeeManager();
+            case Questions.question1.choices[7]:
+                addRole();
+            case Questions.question1.choices[8]:
+                removeRole();
+            case Questions.question1.choices[9]:
+                addDepartment();
+            case Questions.question1.choices[10]:
+                removeDepartment();
+            case Questions.question1.choices[11]:
+                viewDepartmentSalary();
+            case Questions.question1.choices[12]:
+                exit();
+        }
     }
     catch {
         console.log(error);
     }
+}
+
+async function viewAllEmployees() {
+
+}
+
+async function viewEmployeesByDepartment() {
+
+}
+
+async function viewEmployeesByManager() {
+
+}
+
+async function addEmployee() {
+
+}
+
+async function removeEmployee() {
+
+}
+
+async function updateEmployeeRole() {
+
+}
+
+async function updateEmployeeManager() {
+
+}
+
+async function addRole() {
+
+}
+
+async function removeRole() {
+
+}
+
+async function addDepartment() {
+
+}
+
+async function removeDepartment() {
+
+}
+
+async function viewDepartmentSalary() {
+
+}
+
+async function exit() {
+
 }

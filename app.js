@@ -7,6 +7,8 @@ const Questions = questions.Questions;
 const util = require("util");
 const { table, log } = require("console");
 
+let error = "";
+
 // Create connection to the SQL server
 const connection = mysql.createConnection({
     host: "localhost",
@@ -195,10 +197,19 @@ async function addEmployee() {
             }
         );
         
-        // Display confirmation to state that employee has been added to database
-        // console.log(res.affectedRows + " new item listed");
+        if (addEmployee.affectedRows > 1) {
+            error = "More than one entry was added to the employee table";
+            throw error;
+        }
+        else if (addEmployee.affectedRows === 0) {
+            error = "No entries were added to the employee table";
+            throw error;
+        }
 
-        // Display full list of employees (so user can see their new employee has been added
+        // Display confirmation to state that employee has been added to database
+        console.log(`${newEmployee.firstName} ${newEmployee.lastName} has been added to the database`);
+
+        // Display full list of employees (so user can see their new employee has been added)
         viewAllEmployees();
     }
     catch {

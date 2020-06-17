@@ -15,12 +15,29 @@ const connection = mysql.createConnection({
     database: "employeetracker"
 })
 
-// Create the initial connection
+// Create the initial connection, call viewAllEmployees function
 function openConnection() {
     connection.connect(function(err) {
         if (err) console.error(err);
         console.log("connected as id " + connection.threadId);
+        viewAllEmployees();
     })
 }
 
+// Call the openConnection function
 openConnection();
+
+// View all function displays all employees from the employees table
+async function viewAllEmployees() {
+    try {
+        
+        selectAction();
+    }
+    catch {
+        console.log("ERROR - app.js - viewAllEmployees(): " + error);
+    }
+}
+
+function selectAction() {
+
+}

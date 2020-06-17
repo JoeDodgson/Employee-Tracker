@@ -5,6 +5,10 @@ const mysql = require("mysql");
 const questions = require("./questions");
 const ChoiceQuestion = questions.ChoiceQuestion;
 const PromptQuestion = questions.PromptQuestion;
+const util = require("util");
+
+// Promisify the connection.query method
+const queryAsync = util.promisify(connection.query).bind(connection);
 
 // Create connection to the SQL server
 const connection = mysql.createConnection({

@@ -227,9 +227,11 @@ async function removeEmployee() {
         Questions.question5a.choices = employeesList;
 
         // Prompts user to select an employee
-
-        // Prompts "When you remove an employer from this database, you cannot retrieve it. Do you still wish to remove this employee?"
+        const { employee } = await inquirer.prompt(Questions.question5a.returnString());
         
+        // Prompts "When you remove an employer from this database, you cannot retrieve it. Do you still wish to remove this employee?"
+        const { confirmYN } = await inquirer.prompt(Questions.question5b.returnString());
+
         //     If yes - perform SQL deletion of record
         
         //     If no - selectAction()

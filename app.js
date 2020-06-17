@@ -173,10 +173,15 @@ async function addEmployee() {
 
         // Query the database to find the corresponding manager id
         const queryManagerId = await queryAsync(`SELECT id AS managerId FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${newEmployee.manager}'`);
-        const { managerId } = queryManagerId[0];
+        if (queryManagerId[0].managedId === "No manager") {
+            const managerId = null;
+        }
+        else {
+            const { managerId } = queryManagerId[0];
+        }
 
         // Insert new entry into the database
-        // const addEmployee = await queryAsync(`SELECT A.id, CONCAT(A.first_name, ' ', A.last_name) AS name, title, salary, department.name AS department FROM employee AS A LEFT JOIN employee AS B ON A.manager_id = B.id LEFT JOIN role ON A.role_id = role.id LEFT JOIN department ON role.department_id = department.id WHERE CONCAT(B.first_name, ' ', B.last_name) = '${manager}';`);
+        const addEmployee = await queryAsync(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${newEmployee.firstName}", "${newEmployee.lastName}", ${roleId}, ${managerId});`);
         
         // Display confirmation to state that employee has been added to database
 

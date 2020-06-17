@@ -1,14 +1,12 @@
 // Require in modules
 const inquirer = require("inquirer");
-const consoleTable = require("console.table");
+const cTable = require("console.table");
 const mysql = require("mysql");
 const questions = require("./questions");
 const ChoiceQuestion = questions.ChoiceQuestion;
 const PromptQuestion = questions.PromptQuestion;
 const util = require("util");
-
-// Promisify the connection.query method
-const queryAsync = util.promisify(connection.query).bind(connection);
+const { table, log } = require("console");
 
 // Create connection to the SQL server
 const connection = mysql.createConnection({
@@ -18,6 +16,9 @@ const connection = mysql.createConnection({
     password: "",
     database: "employeetracker"
 })
+
+// Promisify the connection.query method
+const queryAsync = util.promisify(connection.query).bind(connection);
 
 // Create the initial connection, call viewAllEmployees function
 function openConnection() {
@@ -34,8 +35,11 @@ openConnection();
 // View all function displays all employees from the employees table
 async function viewAllEmployees() {
     try {
+        const employeesData = await queryAsync("SELECT * FROM employee");
         
-        selectAction();
+        const employeesTable = cTable.getTable(employeesData);
+        console.log(employeesTable);
+        // selectAction();
     }
     catch {
         console.log("ERROR - app.js - viewAllEmployees(): " + error);

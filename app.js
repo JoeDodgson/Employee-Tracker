@@ -232,12 +232,23 @@ async function removeEmployee() {
         // Prompts "When you remove an employer from this database, you cannot retrieve it. Do you still wish to remove this employee?"
         const { confirmYN } = await inquirer.prompt(Questions.question5b.returnString());
 
-        //     If yes - perform SQL deletion of record
-        
-        //     If no - selectAction()
-        
+        // If yes, perform SQL deletion of record
+        if (confirmYN === "Yes") {
+            // Query the employee.id of the employee to be removed
+            const employeeIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
+            const employeeId = employeeIdData[0].id;
+
+            // Amend manager_id to null for records where the removed employee was selected as a manager
+
+            // Delete the record of the employee from the employee table
+        }
+
+        // If no, confirm that the employee was not removed from the database
+        else {
+            console.log(`${employee} was not removed from the database`);
+        }
+
         selectAction();
-        
     }
     catch {
         console.log("ERROR - app.js - removeEmployee(): " + error);        

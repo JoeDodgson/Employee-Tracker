@@ -38,6 +38,7 @@ Questions.question1 = new ChoiceQuestion("What would you like to do?", "action",
 Questions.question2 = new ChoiceQuestion("Select a department", "department", []);
 Questions.question3 = new ChoiceQuestion("Select a manager", "manager", []);
 Questions.question4c = new ChoiceQuestion("Select a role", "role", []);
+Questions.question4d = Questions.question3;
 
 // Export classes
 module.exports = {

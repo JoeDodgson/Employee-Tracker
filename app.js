@@ -28,19 +28,14 @@ function openConnection() {
     })
 }
 
-// Call the openConnection function
-openConnection();
-
 // View all function displays all employees from the employees table
 async function viewAllEmployees() {
     try {
         // Left join role and department tables onto the employee table
         const employeesData = await queryAsync("SELECT A.id, A.first_name, A.last_name, title, salary, CONCAT(B.first_name, ' ', B.last_name) AS manager_name, name AS department FROM employee AS A LEFT JOIN employee AS B ON A.manager_id = B.id LEFT JOIN role ON A.role_id = role.id  LEFT JOIN department ON role.department_id = department.id ORDER BY A.id;");
         
-        // Use cTable to store nicely formatted table of results to display in console.log
+        // Display full list of employees using cTable formatting
         const employeesTable = cTable.getTable(employeesData);
-
-        // Display full list of employees
         console.log("Full list of employees:\n" + employeesTable);
 
         selectAction();
@@ -50,6 +45,7 @@ async function viewAllEmployees() {
     }
 }
 
+// User selects an action. Different functions are called depending on the user's selection
 async function selectAction() {
     try {
         // What would you like to do?
@@ -104,8 +100,29 @@ async function selectAction() {
 }
 
 async function viewEmployeesByDepartment() {
-    console.log("viewEmployeesByDepartment function" );
+    try {
+        // Query the database to return a list of departments
+        const departmentsListData = await queryAsync("SELECT name FROM department;");
+        const departmentsList = departmentsListData.map(department => department.name);
+        
+        // Generate a question using the returned departments
+        Questions.question2.choices = departmentsList;
+        
+        // Ask the user to select a department
+        const { department } = await inquirer.prompt(Questions.question2.returnString());
+
+        // Query the database for all employees using the selected department
+        const employeesInDepartment = await queryAsync(`SELECT A.id, CONCAT(A.first_name, ' ', A.last_name) AS name, title, salary, CONCAT(B.first_name, ' ', B.last_name) AS manager_name FROM employee AS A LEFT JOIN employee AS B ON A.manager_id = B.id LEFT JOIN role ON A.role_id = role.id LEFT JOIN department ON role.department_id = department.id WHERE department.name = '${department}';`);
     
+        // Display list of employees in the selected department using cTable formatting
+        const employeesInDepartmentTable = cTable.getTable(employeesInDepartment);
+        console.log("Full list of employees:\n" + employeesInDepartmentTable);
+
+        selectAction();
+    }
+    catch {
+        console.log("ERROR - app.js - viewEmployeesByDepartment(): " + error);
+    }
 }
 
 async function viewEmployeesByManager() {
@@ -174,3 +191,6 @@ function exit() {
     console.log("Exiting application");
     connection.end();
 }
+
+// Call the openConnection function which initiates the application
+openConnection();

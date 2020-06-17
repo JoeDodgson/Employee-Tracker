@@ -31,9 +31,11 @@ class ChoiceQuestion extends PromptQuestion {
     }
 }
 
+// Generate questions which will be used in app.js
 const Questions = {};
 
 Questions.question1 = new ChoiceQuestion("What would you like to do?", "action", ["View all employees", "View all employees by department", "View all employees by manager", "Add employee", "Remove employee", "Update employee role", "Update employee manager", "Add role", "Remove role", "Add department", "Remove department", "View total salary for a department", "Exit"]);
+Questions.question2 = new ChoiceQuestion("Select a department", "department", []);
 
 // Export classes
 module.exports = {

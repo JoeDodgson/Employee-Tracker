@@ -171,15 +171,21 @@ async function addEmployee() {
         // Prompt the user to input details for new employee: first name, last name, role, manager
         const newEmployee = await inquirer.prompt([Questions.question4a.returnString(), Questions.question4b.returnString(), Questions.question4c.returnString(), Questions.question4d.returnString()]);
 
-        // Query the database to find the corresponding manager id
-        const queryManagerId = await queryAsync(`SELECT id AS managerId FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${newEmployee.manager}'`);
-        if (queryManagerId[0].managedId === "No manager") {
-            const managerId = null;
+        // Query the database to find the corresponding role id
+        const queryRoleId = await queryAsync(`SELECT id AS roleId FROM role WHERE title = '${newEmployee.role}'`);
+        const { roleId } = queryRoleId[0];
+        console.log("roleID: " + roleId);
+        
+        // Set the value of managerId property of newEmployee to null if no manager, or managerId otherwise
+        if (newEmployee.manager === "No manager") {
+            newEmployee.managerId = null;
         }
         else {
-            const { managerId } = queryManagerId[0];
+            // Query the database to find the corresponding manager id
+            const queryManagerId = await queryAsync(`SELECT id AS managerId FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${newEmployee.manager}'`);
+            newEmployee.managerId = queryManagerId[0].managerId;
         }
-
+        
         // Insert new entry into the database
         const addEmployee = await queryAsync(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${newEmployee.firstName}", "${newEmployee.lastName}", ${roleId}, ${managerId});`);
         

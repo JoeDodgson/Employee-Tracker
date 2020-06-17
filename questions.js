@@ -6,8 +6,8 @@ class PromptQuestion {
     }
 
     returnString() {
-        return `{message : "${this.message}",
-        name : "${this.name}"}`
+        return `{"message" : "${this.message}",
+        "name" : "${this.name}"}`
     }
 }
 
@@ -24,16 +24,18 @@ class ChoiceQuestion extends PromptQuestion {
     }
 
     returnString() {
-        return JSON.parse(`{type : "list",
-        message : "${this.message}",
-        name : "${this.name}",
-        choices : ["${this.stringifyChoices()}]}`);
+        return JSON.parse(`{"type" : "list",
+        "message" : "${this.message}",
+        "name" : "${this.name}",
+        "choices" : ["${this.stringifyChoices()}]}`);
     }
 }
 
+const Questions = {};
+
+Questions.question1 = new ChoiceQuestion("What would you like to do?", "action", ["View all employees", "View all employees by department", "View all employees by manager", "Add employee", "Remove employee", "Update employee role", "Update employee manager", "Add role", "Remove role", "Add department", "Remove department", "View total salary for a department", "Exit"]);
 
 // Export classes
 module.exports = {
-    PromptQuestion : PromptQuestion,
-    ChoiceQuestion : ChoiceQuestion
+    Questions : Questions
 };

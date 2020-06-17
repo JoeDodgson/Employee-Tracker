@@ -197,6 +197,7 @@ async function addEmployee() {
             }
         );
         
+        // Throw error if there are no or multiple affected rows 
         if (addEmployee.affectedRows > 1) {
             error = "More than one entry was added to the employee table";
             throw error;
@@ -218,10 +219,57 @@ async function addEmployee() {
 }
 
 async function removeEmployee() {
-    console.log("removeEmployee function" );
-    
-    selectAction();
-    selectAction();
+    try {
+        // Query the database to return a list of employees
+        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
+        const employeesList = employeesListData.map(employee => employee.name);
+
+        // Generate a question using the returned employees
+        Questions.question5a.choices = employeesList;
+
+        // Prompts user to select an employee
+        const { employee } = await inquirer.prompt(Questions.question5a.returnString());
+        
+        // Prompts "When you remove an employer from this database, you cannot retrieve it. Do you still wish to remove this employee?"
+        const { confirmYN } = await inquirer.prompt(Questions.question5b.returnString());
+
+        // If yes, perform SQL deletion of record
+        if (confirmYN === "Yes") {
+            // Query the employee.id of the employee to be removed
+            const employeeIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
+            const employeeId = employeeIdData[0].id;
+            
+            // Amend manager_id to null for records where the removed employee was selected as a manager
+            const updateEmployeeManager = await queryAsync(`UPDATE employee SET manager_id = null WHERE manager_id = '${employeeId}'`);
+            
+            // Delete the record of the employee from the employee table
+            const deleteEmployee = await queryAsync(`DELETE FROM employee WHERE id = ${employeeId}`);
+
+            // Throw error if there are no affected rows 
+            if (deleteEmployee.affectedRows > 1) {
+                error = "More than one entry was removed from the employee tablean";
+                throw error;
+            }
+            else if (deleteEmployee.affectedRows === 0) {
+                error = "No entries were removed from the employee table\n";
+                throw error;
+            }
+
+            // Display confirmation to state that employee has been removed from database
+            console.log(`${employee} was removed from the database\n`);
+        }
+
+        // If no, confirm that the employee was not removed from the database
+        else {
+            console.log(`${employee} was not removed from the database\n`);
+        }
+
+        // Display full list of employees (so user can see their new employee has been added)
+        viewAllEmployees();
+    }
+    catch {
+        console.log("ERROR - app.js - removeEmployee(): " + error);
+    }
 }
 
 async function updateEmployeeRole() {

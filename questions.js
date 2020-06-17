@@ -41,6 +41,8 @@ Questions.question4a = new PromptQuestion("Enter the new employee's first name",
 Questions.question4b = new PromptQuestion("Enter employee's last name", "lastName");
 Questions.question4c = new ChoiceQuestion("Select a role", "role", []);
 Questions.question4d = Questions.question3;
+Questions.question5a = new ChoiceQuestion("Select an employee to remove", "employee", []);
+Questions.question5b = new ChoiceQuestion("When you remove an employee from this database, you cannot retrieve it. Do you still wish to remove this employee?", "confirmYN", ["Yes", "No"]);
 
 // Export classes
 module.exports = {

@@ -35,7 +35,7 @@ openConnection();
 // View all function displays all employees from the employees table
 async function viewAllEmployees() {
     try {
-        const employeesData = await queryAsync("SELECT * FROM employee");
+        const employeesData = await queryAsync("SELECT * FROM employee LEFT JOIN role ON employee.role_id = role.id");
         
         const employeesTable = cTable.getTable(employeesData);
         console.log(employeesTable);

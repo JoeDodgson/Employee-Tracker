@@ -240,8 +240,14 @@ async function removeEmployee() {
             
             // Amend manager_id to null for records where the removed employee was selected as a manager
             const updateEmployeeManager = await queryAsync(`UPDATE employee SET manager_id = null WHERE manager_id = '${employeeId}'`);
-
+            
             // Delete the record of the employee from the employee table
+            const deleteEmployee = await queryAsync(`DELETE FROM employee WHERE id = ${employeeId}`);
+
+            // Throw error if rows affected != 1
+
+            // Display confirmation to state that employee has been removed from database
+            console.log(`${employee} was removed from the database`);
         }
 
         // If no, confirm that the employee was not removed from the database
@@ -249,7 +255,8 @@ async function removeEmployee() {
             console.log(`${employee} was not removed from the database`);
         }
 
-        selectAction();
+        // Display full list of employees (so user can see their new employee has been added)
+        viewAllEmployees();
     }
     catch {
         console.log("ERROR - app.js - removeEmployee(): " + error);        

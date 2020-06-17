@@ -169,8 +169,8 @@ async function viewDepartmentSalary() {
     selectAction();
 }
 
-async function exit() {
-    console.log("exit function" );
-    
-    selectAction();
+// Displays exit message and ends database connection 
+function exit() {
+    console.log("Exiting application");
+    connection.end();
 }

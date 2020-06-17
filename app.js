@@ -154,6 +154,8 @@ async function viewEmployeesByManager() {
 async function addEmployee() {
     try {
         // Query the database to return a list of roles
+        const rolesListData = await queryAsync("SELECT title FROM role;");
+        const rolesList = rolesListData.map(role => role.title);
         
         // Generate a question using the returned roles
 

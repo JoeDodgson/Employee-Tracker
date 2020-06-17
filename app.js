@@ -163,18 +163,21 @@ async function addEmployee() {
         // Query the database to return a list of employees
         const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
         const employeesList = employeesListData.map(employee => employee.name);
-        
+        employeesList.push("No manager");
+
         // Generate a question using the returned employees
         Questions.question4d.choices = employeesList;
         
         // Prompt the user to input details for new employee: first name, last name, role, manager
         const newEmployee = await inquirer.prompt([Questions.question4a.returnString(), Questions.question4b.returnString(), Questions.question4c.returnString(), Questions.question4d.returnString()]);
+        
+        // Query the database to find the corresponding manager id
 
         // Insert new entry into the database
         
-        // Display confirmation to state that 
+        // Display confirmation to state that employee has been added to database
 
-        // Display full list of employees (so user can see their new employee has been added)
+        // Display full list of employees (so user can see their new employee has been added
         viewAllEmployees();
     }
     catch {

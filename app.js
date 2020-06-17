@@ -173,8 +173,7 @@ async function addEmployee() {
 
         // Query the database to find the corresponding role id
         const queryRoleId = await queryAsync(`SELECT id AS roleId FROM role WHERE title = '${newEmployee.role}'`);
-        const { roleId } = queryRoleId[0];
-        console.log("roleID: " + roleId);
+        newEmployee.roleId = queryRoleId[0].roleId;
         
         // Set the value of managerId property of newEmployee to null if no manager, or managerId otherwise
         if (newEmployee.manager === "No manager") {
@@ -185,11 +184,19 @@ async function addEmployee() {
             const queryManagerId = await queryAsync(`SELECT id AS managerId FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${newEmployee.manager}'`);
             newEmployee.managerId = queryManagerId[0].managerId;
         }
-        
+
         // Insert new entry into the database
-        const addEmployee = await queryAsync(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${newEmployee.firstName}", "${newEmployee.lastName}", ${roleId}, ${managerId});`);
+        const addEmployee = await queryAsync("INSERT INTO employee SET ?",
+            {
+                first_name: newEmployee.firstName,
+                last_name: newEmployee.lastName,
+                role_id: newEmployee.roleId,
+                manager_id: newEmployee.managerId
+            }
+        );
         
         // Display confirmation to state that employee has been added to database
+        // console.log(res.affectedRows + " new item listed");
 
         // Display full list of employees (so user can see their new employee has been added
         viewAllEmployees();

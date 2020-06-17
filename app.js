@@ -128,7 +128,9 @@ async function viewEmployeesByDepartment() {
 async function viewEmployeesByManager() {
     try {
         // Query the database to return a list of managers
-        
+        const managersListData = await queryAsync("SELECT DISTINCT CONCAT(B.first_name, ' ', B.last_name) AS name FROM employee AS A INNER JOIN employee AS B ON A.manager_id = B.id;");
+        const managersList = managersListData.map(manager => manager.name);
+
         // Generate a question using the returned managers
         
         // Ask the user to select a manager

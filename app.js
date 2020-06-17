@@ -237,8 +237,9 @@ async function removeEmployee() {
             // Query the employee.id of the employee to be removed
             const employeeIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
             const employeeId = employeeIdData[0].id;
-
+            
             // Amend manager_id to null for records where the removed employee was selected as a manager
+            const updateEmployeeManager = await queryAsync(`UPDATE employee SET manager_id = null WHERE manager_id = '${employeeId}'`);
 
             // Delete the record of the employee from the employee table
         }

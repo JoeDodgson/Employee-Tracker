@@ -218,10 +218,25 @@ async function addEmployee() {
 }
 
 async function removeEmployee() {
-    console.log("removeEmployee function" );
-    
-    selectAction();
-    selectAction();
+    try {
+        // Query the database to return a list of employees
+       
+        // Generate a question using the returned employees    
+
+        // Prompts user to select an employee
+
+        // Prompts "When you remove an employer from this database, you cannot retrieve it. Do you still wish to remove this employee?"
+        
+        //     If yes - perform SQL deletion of record
+        
+        //     If no - selectAction()
+        
+        selectAction();
+        
+    }
+    catch {
+        console.log("ERROR - app.js - removeEmployee(): " + error);        
+    }
 }
 
 async function updateEmployeeRole() {

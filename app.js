@@ -168,6 +168,7 @@ async function addEmployee() {
         Questions.question4d.choices = managersList;
         
         // Prompt the user to input details for new employee: first name, last name, role, manager
+        const newEmployee = await inquirer.prompt([Questions.question4a.returnString(), Questions.question4b.returnString(), Questions.question4c.returnString(), Questions.question4d.returnString()]);
 
         // Insert new entry into the database
         
@@ -175,8 +176,6 @@ async function addEmployee() {
 
         // Display full list of employees (so user can see their new employee has been added)
         viewAllEmployees();
-        
-        selectAction();
     }
     catch {
         console.log("ERROR - app.js - addEmployee(): " + error);        

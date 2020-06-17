@@ -28,9 +28,6 @@ function openConnection() {
     })
 }
 
-// Call the openConnection function
-openConnection();
-
 // View all function displays all employees from the employees table
 async function viewAllEmployees() {
     try {
@@ -50,6 +47,7 @@ async function viewAllEmployees() {
     }
 }
 
+// User selects an action. Different functions are called depending on the user's selection
 async function selectAction() {
     try {
         // What would you like to do?
@@ -104,8 +102,21 @@ async function selectAction() {
 }
 
 async function viewEmployeesByDepartment() {
-    console.log("viewEmployeesByDepartment function" );
+    try {
+        // Query the database to return a list of departments
     
+        // Generate a question using the returned departments
+    
+        // Ask the user to select a department
+    
+        // Query the database for all employees using the selected department
+    
+        // Call selectAction function 
+        selectAction();
+    }
+    catch {
+        console.log("ERROR - app.js - viewEmployeesByDepartment(): " + error);
+    }
 }
 
 async function viewEmployeesByManager() {
@@ -174,3 +185,6 @@ function exit() {
     console.log("Exiting application");
     connection.end();
 }
+
+// Call the openConnection function which initiates the application
+openConnection();

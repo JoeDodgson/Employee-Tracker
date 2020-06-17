@@ -160,12 +160,12 @@ async function addEmployee() {
         // Generate a question using the returned roles
         Questions.question4c.choices = rolesList;
         
-        // Query the database to return a list of managers
-        const managersListData = await queryAsync("SELECT DISTINCT CONCAT(B.first_name, ' ', B.last_name) AS name FROM employee AS A INNER JOIN employee AS B ON A.manager_id = B.id;");
-        const managersList = managersListData.map(manager => manager.name);
+        // Query the database to return a list of employees
+        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
+        const employeesList = employeesListData.map(employee => employee.name);
         
-        // Generate a question using the returned managers
-        Questions.question4d.choices = managersList;
+        // Generate a question using the returned employees
+        Questions.question4d.choices = employeesList;
         
         // Prompt the user to input details for new employee: first name, last name, role, manager
         const newEmployee = await inquirer.prompt([Questions.question4a.returnString(), Questions.question4b.returnString(), Questions.question4c.returnString(), Questions.question4d.returnString()]);

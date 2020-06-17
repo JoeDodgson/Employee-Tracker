@@ -152,9 +152,29 @@ async function viewEmployeesByManager() {
 }
 
 async function addEmployee() {
-    console.log("addEmployee function" );
+    try {
+        // Query the database to return a list of roles
+        
+        // Generate a question using the returned roles
 
-    selectAction();
+        // Query the database to return a list of managers
+        
+        // Generate a question using the returned managers
+        
+        // Prompt the user to input details for new employee: first name, last name, role, manager
+
+        // Insert new entry into the database
+        
+        // Display confirmation to state that 
+
+        // Display full list of employees (so user can see their new employee has been added)
+        viewAllEmployees();
+        
+        selectAction();
+    }
+    catch {
+        console.log("ERROR - app.js - addEmployee(): " + error);        
+    }
 }
 
 async function removeEmployee() {

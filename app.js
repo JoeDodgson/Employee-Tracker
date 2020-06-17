@@ -158,6 +158,7 @@ async function addEmployee() {
         const rolesList = rolesListData.map(role => role.title);
         
         // Generate a question using the returned roles
+        Questions.question4c.choices = rolesList;
 
         // Query the database to return a list of managers
         

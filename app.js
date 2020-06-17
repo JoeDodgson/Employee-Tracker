@@ -7,6 +7,8 @@ const Questions = questions.Questions;
 const util = require("util");
 const { table, log } = require("console");
 
+let error = "";
+
 // Create connection to the SQL server
 const connection = mysql.createConnection({
     host: "localhost",
@@ -152,9 +154,67 @@ async function viewEmployeesByManager() {
 }
 
 async function addEmployee() {
-    console.log("addEmployee function" );
+    try {
+        // Query the database to return a list of roles
+        const rolesListData = await queryAsync("SELECT title FROM role;");
+        const rolesList = rolesListData.map(role => role.title);
+        
+        // Generate a question using the returned roles
+        Questions.question4c.choices = rolesList;
+        
+        // Query the database to return a list of employees
+        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
+        const employeesList = employeesListData.map(employee => employee.name);
+        employeesList.push("No manager");
 
-    selectAction();
+        // Generate a question using the returned employees
+        Questions.question4d.choices = employeesList;
+        
+        // Prompt the user to input details for new employee: first name, last name, role, manager
+        const newEmployee = await inquirer.prompt([Questions.question4a.returnString(), Questions.question4b.returnString(), Questions.question4c.returnString(), Questions.question4d.returnString()]);
+
+        // Query the database to find the corresponding role id
+        const queryRoleId = await queryAsync(`SELECT id AS roleId FROM role WHERE title = '${newEmployee.role}'`);
+        newEmployee.roleId = queryRoleId[0].roleId;
+        
+        // Set the value of managerId property of newEmployee to null if no manager, or managerId otherwise
+        if (newEmployee.manager === "No manager") {
+            newEmployee.managerId = null;
+        }
+        else {
+            // Query the database to find the corresponding manager id
+            const queryManagerId = await queryAsync(`SELECT id AS managerId FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${newEmployee.manager}'`);
+            newEmployee.managerId = queryManagerId[0].managerId;
+        }
+
+        // Insert new entry into the database
+        const addEmployee = await queryAsync("INSERT INTO employee SET ?",
+            {
+                first_name: newEmployee.firstName,
+                last_name: newEmployee.lastName,
+                role_id: newEmployee.roleId,
+                manager_id: newEmployee.managerId
+            }
+        );
+        
+        if (addEmployee.affectedRows > 1) {
+            error = "More than one entry was added to the employee table";
+            throw error;
+        }
+        else if (addEmployee.affectedRows === 0) {
+            error = "No entries were added to the employee table";
+            throw error;
+        }
+
+        // Display confirmation to state that employee has been added to database
+        console.log(`${newEmployee.firstName} ${newEmployee.lastName} has been added to the database`);
+
+        // Display full list of employees (so user can see their new employee has been added)
+        viewAllEmployees();
+    }
+    catch {
+        console.log("ERROR - app.js - addEmployee(): " + error);        
+    }
 }
 
 async function removeEmployee() {

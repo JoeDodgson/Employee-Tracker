@@ -110,14 +110,14 @@ async function viewEmployeesByDepartment() {
         
         // Ask the user to select a department
         const { department } = await inquirer.prompt(Questions.question2.returnString());
-
+        
         // Query the database for all employees using the selected department
         const employeesInDepartment = await queryAsync(`SELECT A.id, CONCAT(A.first_name, ' ', A.last_name) AS name, title, salary, CONCAT(B.first_name, ' ', B.last_name) AS manager_name FROM employee AS A LEFT JOIN employee AS B ON A.manager_id = B.id LEFT JOIN role ON A.role_id = role.id LEFT JOIN department ON role.department_id = department.id WHERE department.name = '${department}';`);
-    
+        
         // Display list of employees in the selected department using cTable formatting
         const employeesInDepartmentTable = cTable.getTable(employeesInDepartment);
         console.log(`List of employees in the ${department} department:\n\n` + employeesInDepartmentTable);
-
+        
         selectAction();
     }
     catch {
@@ -130,11 +130,12 @@ async function viewEmployeesByManager() {
         // Query the database to return a list of managers
         const managersListData = await queryAsync("SELECT DISTINCT CONCAT(B.first_name, ' ', B.last_name) AS name FROM employee AS A INNER JOIN employee AS B ON A.manager_id = B.id;");
         const managersList = managersListData.map(manager => manager.name);
-
+        
         // Generate a question using the returned managers
         Questions.question3.choices = managersList;
-
+        
         // Ask the user to select a manager
+        const { manager } = await inquirer.prompt(Questions.question3.returnString());
         
         // Query the database for all employees who work for the selected manager
         

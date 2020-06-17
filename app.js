@@ -139,8 +139,10 @@ async function viewEmployeesByManager() {
         
         // Query the database for all employees who work for the selected manager
         const employeesUnderManager = await queryAsync(`SELECT A.id, CONCAT(A.first_name, ' ', A.last_name) AS name, title, salary, department.name AS department FROM employee AS A LEFT JOIN employee AS B ON A.manager_id = B.id LEFT JOIN role ON A.role_id = role.id LEFT JOIN department ON role.department_id = department.id WHERE CONCAT(B.first_name, ' ', B.last_name) = '${manager}';`);
-
+        
         // Display list of employees who work for the selected manager using cTable formatting
+        const employeesUnderManagerTable = cTable.getTable(employeesUnderManager);
+        console.log(`List of employees who work for ${manager}:\n\n` + employeesUnderManagerTable);
         
         selectAction();
     }

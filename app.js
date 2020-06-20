@@ -334,8 +334,10 @@ async function updateEmployeeManager() {
         Questions.question7b.choices = employeesList;
 
         // Prompts user to select an employee
-
+        const { employee } = await inquirer.prompt(Questions.question7a.returnString());
+        
         // Prompts user to select a new manager for the employee
+        const { manager } = await inquirer.prompt(Questions.question7b.returnString());
 
         // Query the employee.id of the employee to be have manager changed
 

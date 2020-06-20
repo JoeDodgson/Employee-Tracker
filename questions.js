@@ -49,7 +49,7 @@ Questions.question7a = new ChoiceQuestion("Select an employee whose manager shou
 Questions.question7b = Questions.question3;
 Questions.question8a = new PromptQuestion("Enter the new role title", "title");
 Questions.question8b = new PromptQuestion("Enter the new role salary (£s)", "salary");
-Questions.question8c = new PromptQuestion("Select the department for the new role", "department");
+Questions.question8c = new ChoiceQuestion("Select the department for the new role", "department", []);
 
 // Export classes
 module.exports = {

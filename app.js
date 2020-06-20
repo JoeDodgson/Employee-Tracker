@@ -310,8 +310,10 @@ async function addRole() {
         const newRole = await inquirer.prompt([Questions.question8a.returnString(), Questions.question8b.returnString(), Questions.question8c.returnString()]);
 
         // Query the database to find the corresponding department id
+        const departmendId = sqlQueries.returnDepartmentId(newRole.department);
                 
         // Assign record values into colValues object
+        
         
         // Insert new entry into the database
 

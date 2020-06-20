@@ -303,6 +303,7 @@ async function updateEmployeeRole() {
         const roleId = roleIdData[0].id;
 
         // Amend the role of the employee
+        const updateEmployee = await queryAsync(`UPDATE employee SET role_id = ${roleId} WHERE id = ${employeeId};`);
     
         // Display confirmation to state that the role of the employee was updated
     

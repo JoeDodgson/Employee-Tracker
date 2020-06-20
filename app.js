@@ -289,8 +289,10 @@ async function updateEmployeeRole() {
         Questions.question6b.choices = rolesList;
     
         // Prompts user to select an employee
-    
+        const { employee } = await inquirer.prompt(Questions.question6a.returnString());
+        
         // Prompts user to select a new role for the employee
+        const { role } = await inquirer.prompt(Questions.question6b.returnString());
     
         // Query the employee.id of the employee to be have role changed
     

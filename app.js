@@ -327,8 +327,12 @@ async function updateEmployeeManager() {
         Questions.question7a.choices = employeesList;
 
         // Query the database to return a list of managers
+        const rolesListData = await queryAsync("SELECT title FROM role;");
+        const rolesList = rolesListData.map(role => role.title);
 
         // Generate a question using the returned managers
+        const managersListData = await queryAsync("SELECT DISTINCT CONCAT(B.first_name, ' ', B.last_name) AS name FROM employee AS A INNER JOIN employee AS B ON A.manager_id = B.id;");
+        const managersList = managersListData.map(manager => manager.name);
 
         // Prompts user to select an employee
 

@@ -33,11 +33,11 @@ const sqlQueries = {
             const data = await queryAsync(`INSERT INTO ${table} SET ?`, colValues);
             // Throw error if there are no or multiple affected rows 
             if (data.affectedRows > 1) {
-                error = "More than one entry was added to the employee table";
+                error = `More than one entry was added to the ${table} table`;
                 throw error;
             }
             else if (data.affectedRows === 0) {
-                error = "No entries were added to the employee table";
+                error = `No entries were added to the ${table} table`;
                 throw error;
             }
             return data;
@@ -53,17 +53,37 @@ const sqlQueries = {
             const data = await queryAsync(`DELETE FROM ${table} WHERE ${columnName} = ${columnValue}`);
             // Throw error if there are no or multiple affected rows 
             if (data.affectedRows > 1) {
-                error = "More than one entry was added to the employee table";
+                error = `More than one entry was deleted from the ${table} table`;
                 throw error;
             }
             else if (data.affectedRows === 0) {
-                error = "No entries were added to the employee table";
+                error = `No entries were deleted from the ${table} table`;
                 throw error;
             }
             return data;
         }
         catch (error) {
             console.log("ERROR - sql-queries.js - sqlQueries.deleteRecord(): " + error);
+        }
+    },
+    
+    // Update record into database
+    updateRecord: async (table, setColName, setColValue, whereColName, whereColValue) => {
+        try {
+            const data = await queryAsync(`UPDATE ${table} SET ${setColName} = ${setColValue} WHERE ${whereColName} = ${whereColValue};`);
+            // Throw error if there are no or multiple affected rows 
+            if (data.affectedRows > 1) {
+                error = `More than one entry was updated in the ${table} table`;
+                throw error;
+            }
+            else if (data.affectedRows === 0) {
+                error = `No entries were updated in the ${table} table`;
+                throw error;
+            }
+            return data;
+        }
+        catch (error) {
+            console.log("ERROR - sql-queries.js - sqlQueries.updateRecord(): " + error);
         }
     },
     

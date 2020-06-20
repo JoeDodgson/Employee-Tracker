@@ -235,19 +235,11 @@ async function removeEmployee() {
 
 async function updateEmployeeRole() {
     try {
-        // Query the database to return a list of employees
-        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
-        const employeesList = employeesListData.map(employee => employee.name);
-
-        // Generate a question using the returned employees
-        Questions.question6a.choices = employeesList;
+        // Query the database for employees. Use employees as question choices
+        Questions.question6a.choices = await sqlQueries.employeesList();
         
-        // Query the database to return a list of roles
-        const rolesListData = await queryAsync("SELECT title FROM role;");
-        const rolesList = rolesListData.map(role => role.title);
-        
-        // Generate a question using the returned roles
-        Questions.question6b.choices = rolesList;
+        // Query the database for roles. Use roles as question choices
+        Questions.question6b.choices = await sqlQueries.selectTableCol("title", "role");
     
         // Prompts user to select an employee
         const { employee } = await inquirer.prompt(Questions.question6a.returnString());
@@ -256,15 +248,13 @@ async function updateEmployeeRole() {
         const { role } = await inquirer.prompt(Questions.question6b.returnString());
     
         // Query the employee.id of the employee to be have role changed
-        const employeeIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
-        const employeeId = employeeIdData[0].id;
+        const employeeId = await sqlQueries.returnEmployeeId(employee);
         
         // Query the role id of the new role selected
-        const roleIdData = await queryAsync(`SELECT id FROM role WHERE title = '${role}'`);
-        const roleId = roleIdData[0].id;
+        const roleId = await sqlQueries.returnRoleId(role);
 
         // Amend the role of the employee
-        const updateEmployee = await queryAsync(`UPDATE employee SET role_id = ${roleId} WHERE id = ${employeeId};`);
+        const updateEmployee = await sqlQueries.updateRecord("employee", "role_id", roleId, "id", employeeId);
     
         // Display confirmation to state that the role of the employee was updated
         console.log(`\nThe role of ${employee} was successfully changed to ${role}\n`);

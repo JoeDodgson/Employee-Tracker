@@ -171,16 +171,17 @@ async function addEmployee() {
             // Query the database to find the corresponding manager id
             newEmployee.managerId = await sqlQueries.returnManagerId(newEmployee.manager);
         }
-
+        
+        // Assign record values into colValues object
+        const colValues = {
+            first_name: newEmployee.firstName,
+            last_name: newEmployee.lastName,
+            role_id: newEmployee.roleId,
+            manager_id: newEmployee.managerId
+        };
+        
         // Insert new entry into the database
-        const addEmployee = await queryAsync("INSERT INTO employee SET ?",
-            {
-                first_name: newEmployee.firstName,
-                last_name: newEmployee.lastName,
-                role_id: newEmployee.roleId,
-                manager_id: newEmployee.managerId
-            }
-        );
+        const addEmployee = await sqlQueries.insertRecord("employee",colValues);
         
         // Throw error if there are no or multiple affected rows 
         if (addEmployee.affectedRows > 1) {

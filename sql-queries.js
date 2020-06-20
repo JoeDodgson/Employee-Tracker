@@ -27,6 +27,17 @@ const sqlQueries = {
         }
     },
     
+    // Insert record into database
+    insertRecord: async (table, colValues) => {
+        try {
+            const data = await queryAsync(`INSERT INTO ${table} SET ?`, colValues);
+            return data;
+        }
+        catch (error) {
+            console.log("ERROR - sql-queries.js - sqlQueries.insertRecord(): " + error);
+        }
+    },
+    
     // Database query for all employees in a department
     employeesInDepartment: async department => {
         try {

@@ -71,6 +71,18 @@ const sqlQueries = {
         catch (error) {
             console.log("ERROR - sql-queries.js - sqlQueries.employeesUnderManager(): " + error);
         }
+    },
+
+    // Database query for all employees who work for specified manager
+    returnRoleId: async role => {
+        try {
+            const data = await queryAsync(`SELECT id AS roleId FROM role WHERE title = '${role}'`);
+            const roleId = data[0].roleId;
+            return roleId;
+        }
+        catch (error) {
+            console.log("ERROR - sql-queries.js - sqlQueries.returnRoleId(): " + error);
+        }
     }
 }
 

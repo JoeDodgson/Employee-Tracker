@@ -161,8 +161,7 @@ async function addEmployee() {
         const newEmployee = await inquirer.prompt([Questions.question4a.returnString(), Questions.question4b.returnString(), Questions.question4c.returnString(), Questions.question4d.returnString()]);
 
         // Query the database to find the corresponding role id
-        const queryRoleId = await queryAsync(`SELECT id AS roleId FROM role WHERE title = '${newEmployee.role}'`);
-        newEmployee.roleId = queryRoleId[0].roleId;
+        newEmployee.roleId = await sqlQueries.returnRoleId(newEmployee.role);
         
         // Set the value of managerId property of newEmployee to null if no manager, or managerId otherwise
         if (newEmployee.manager === "No manager") {

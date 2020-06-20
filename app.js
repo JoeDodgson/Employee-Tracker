@@ -280,12 +280,13 @@ async function updateEmployeeRole() {
 
         // Generate a question using the returned employees
         Questions.question6a.choices = employeesList;
-    
+        
         // Query the database to return a list of roles
         const rolesListData = await queryAsync("SELECT title FROM role;");
         const rolesList = rolesListData.map(role => role.title);
-    
+        
         // Generate a question using the returned roles
+        Questions.question6b.choices = rolesList;
     
         // Prompts user to select an employee
     

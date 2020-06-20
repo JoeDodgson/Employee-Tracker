@@ -2,10 +2,13 @@
 const inquirer = require("inquirer");
 const cTable = require("console.table");
 const mysql = require("mysql");
-const questions = require("./questions");
-const Questions = questions.Questions;
 const util = require("util");
 const { table, log } = require("console");
+
+// Require in files
+const questions = require("./questions");
+const Questions = questions.Questions;
+const sqlQueries = require("./sql-queries");
 
 let error = "";
 
@@ -103,18 +106,14 @@ async function selectAction() {
 
 async function viewEmployeesByDepartment() {
     try {
-        // Query the database to return a list of departments
-        const departmentsListData = await queryAsync("SELECT name FROM department;");
-        const departmentsList = departmentsListData.map(department => department.name);
-        
-        // Generate a question using the returned departments
-        Questions.question2.choices = departmentsList;
+        // Query the database for departments names. Use names as question choices
+        Questions.question2.choices = await sqlQueries.selectTableCol("name", "department");
         
         // Ask the user to select a department
         const { department } = await inquirer.prompt(Questions.question2.returnString());
         
         // Query the database for all employees using the selected department
-        const employeesInDepartment = await queryAsync(`SELECT A.id, CONCAT(A.first_name, ' ', A.last_name) AS name, title, salary, CONCAT(B.first_name, ' ', B.last_name) AS manager_name FROM employee AS A LEFT JOIN employee AS B ON A.manager_id = B.id LEFT JOIN role ON A.role_id = role.id LEFT JOIN department ON role.department_id = department.id WHERE department.name = '${department}';`);
+        const employeesInDepartment = await sqlQueries.employeesInDepartment(department);
         
         // Display list of employees in the selected department using cTable formatting
         const employeesInDepartmentTable = cTable.getTable(employeesInDepartment);
@@ -129,18 +128,14 @@ async function viewEmployeesByDepartment() {
 
 async function viewEmployeesByManager() {
     try {
-        // Query the database to return a list of managers
-        const managersListData = await queryAsync("SELECT DISTINCT CONCAT(B.first_name, ' ', B.last_name) AS name FROM employee AS A INNER JOIN employee AS B ON A.manager_id = B.id;");
-        const managersList = managersListData.map(manager => manager.name);
-        
-        // Generate a question using the returned managers
-        Questions.question3.choices = managersList;
+        // Query the database for managers. Use managers as question choices
+        Questions.question3.choices = await sqlQueries.managersList();
         
         // Ask the user to select a manager
         const { manager } = await inquirer.prompt(Questions.question3.returnString());
         
         // Query the database for all employees who work for the selected manager
-        const employeesUnderManager = await queryAsync(`SELECT A.id, CONCAT(A.first_name, ' ', A.last_name) AS name, title, salary, department.name AS department FROM employee AS A LEFT JOIN employee AS B ON A.manager_id = B.id LEFT JOIN role ON A.role_id = role.id LEFT JOIN department ON role.department_id = department.id WHERE CONCAT(B.first_name, ' ', B.last_name) = '${manager}';`);
+        const employeesUnderManager = await sqlQueries.employeesUnderManager(manager);
         
         // Display list of employees who work for the selected manager using cTable formatting
         const employeesUnderManagerTable = cTable.getTable(employeesUnderManager);
@@ -155,27 +150,18 @@ async function viewEmployeesByManager() {
 
 async function addEmployee() {
     try {
-        // Query the database to return a list of roles
-        const rolesListData = await queryAsync("SELECT title FROM role;");
-        const rolesList = rolesListData.map(role => role.title);
+        // Query the database for roles. Use roles as question choices
+        Questions.question4c.choices = await sqlQueries.selectTableCol("title", "role");
         
-        // Generate a question using the returned roles
-        Questions.question4c.choices = rolesList;
-        
-        // Query the database to return a list of employees
-        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
-        const employeesList = employeesListData.map(employee => employee.name);
-        employeesList.push("No manager");
-
-        // Generate a question using the returned employees
-        Questions.question4d.choices = employeesList;
+        // Query the database for employees. Use employees as manager choices. Include 'no manager' option
+        Questions.question4d.choices = await sqlQueries.employeesList();
+        Questions.question4d.choices.push("No manager");
         
         // Prompt the user to input details for new employee: first name, last name, role, manager
         const newEmployee = await inquirer.prompt([Questions.question4a.returnString(), Questions.question4b.returnString(), Questions.question4c.returnString(), Questions.question4d.returnString()]);
 
         // Query the database to find the corresponding role id
-        const queryRoleId = await queryAsync(`SELECT id AS roleId FROM role WHERE title = '${newEmployee.role}'`);
-        newEmployee.roleId = queryRoleId[0].roleId;
+        newEmployee.roleId = await sqlQueries.returnRoleId(newEmployee.role);
         
         // Set the value of managerId property of newEmployee to null if no manager, or managerId otherwise
         if (newEmployee.manager === "No manager") {
@@ -183,29 +169,19 @@ async function addEmployee() {
         }
         else {
             // Query the database to find the corresponding manager id
-            const queryManagerId = await queryAsync(`SELECT id AS managerId FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${newEmployee.manager}'`);
-            newEmployee.managerId = queryManagerId[0].managerId;
+            newEmployee.managerId = await sqlQueries.returnManagerId(newEmployee.manager);
         }
-
-        // Insert new entry into the database
-        const addEmployee = await queryAsync("INSERT INTO employee SET ?",
-            {
-                first_name: newEmployee.firstName,
-                last_name: newEmployee.lastName,
-                role_id: newEmployee.roleId,
-                manager_id: newEmployee.managerId
-            }
-        );
         
-        // Throw error if there are no or multiple affected rows 
-        if (addEmployee.affectedRows > 1) {
-            error = "More than one entry was added to the employee table";
-            throw error;
-        }
-        else if (addEmployee.affectedRows === 0) {
-            error = "No entries were added to the employee table";
-            throw error;
-        }
+        // Assign record values into colValues object
+        const colValues = {
+            first_name: newEmployee.firstName,
+            last_name: newEmployee.lastName,
+            role_id: newEmployee.roleId,
+            manager_id: newEmployee.managerId
+        };
+        
+        // Insert new entry into the database
+        const addEmployee = await sqlQueries.insertRecord("employee", colValues);
 
         // Display confirmation to state that employee has been added to database
         console.log(`${newEmployee.firstName} ${newEmployee.lastName} has been added to the database`);
@@ -220,40 +196,25 @@ async function addEmployee() {
 
 async function removeEmployee() {
     try {
-        // Query the database to return a list of employees
-        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
-        const employeesList = employeesListData.map(employee => employee.name);
+        // Query the database for employees. Use employees as question choices
+        Questions.question5a.choices = await sqlQueries.employeesList();
 
-        // Generate a question using the returned employees
-        Questions.question5a.choices = employeesList;
-
-        // Prompts user to select an employee
+        // Prompt user to select an employee
         const { employee } = await inquirer.prompt(Questions.question5a.returnString());
         
-        // Prompts "When you remove an employer from this database, you cannot retrieve it. Do you still wish to remove this employee?"
+        // Prompt "When you remove an employer from this database, you cannot retrieve it. Do you still wish to remove this employee?"
         const { confirmYN } = await inquirer.prompt(Questions.question5b.returnString());
 
         // If yes, perform SQL deletion of record
         if (confirmYN === "Yes") {
             // Query the employee.id of the employee to be removed
-            const employeeIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
-            const employeeId = employeeIdData[0].id;
+            const employeeId = await sqlQueries.returnEmployeeId(employee);
             
             // Amend manager_id to null for records where the removed employee was selected as a manager
-            const updateEmployeeManager = await queryAsync(`UPDATE employee SET manager_id = null WHERE manager_id = '${employeeId}'`);
+            const updateEmployeeManager = await sqlQueries.nullManagerId(employeeId);
             
             // Delete the record of the employee from the employee table
-            const deleteEmployee = await queryAsync(`DELETE FROM employee WHERE id = ${employeeId}`);
-
-            // Throw error if there are no affected rows 
-            if (deleteEmployee.affectedRows > 1) {
-                error = "More than one entry was removed from the employee tablean";
-                throw error;
-            }
-            else if (deleteEmployee.affectedRows === 0) {
-                error = "No entries were removed from the employee table\n";
-                throw error;
-            }
+            const deleteEmployee = await sqlQueries.deleteRecord("employee", "id", employeeId);
 
             // Display confirmation to state that employee has been removed from database
             console.log(`${employee} was removed from the database\n`);
@@ -274,19 +235,11 @@ async function removeEmployee() {
 
 async function updateEmployeeRole() {
     try {
-        // Query the database to return a list of employees
-        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
-        const employeesList = employeesListData.map(employee => employee.name);
-
-        // Generate a question using the returned employees
-        Questions.question6a.choices = employeesList;
+        // Query the database for employees. Use employees as question choices
+        Questions.question6a.choices = await sqlQueries.employeesList();
         
-        // Query the database to return a list of roles
-        const rolesListData = await queryAsync("SELECT title FROM role;");
-        const rolesList = rolesListData.map(role => role.title);
-        
-        // Generate a question using the returned roles
-        Questions.question6b.choices = rolesList;
+        // Query the database for roles. Use roles as question choices
+        Questions.question6b.choices = await sqlQueries.selectTableCol("title", "role");
     
         // Prompts user to select an employee
         const { employee } = await inquirer.prompt(Questions.question6a.returnString());
@@ -295,15 +248,13 @@ async function updateEmployeeRole() {
         const { role } = await inquirer.prompt(Questions.question6b.returnString());
     
         // Query the employee.id of the employee to be have role changed
-        const employeeIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
-        const employeeId = employeeIdData[0].id;
+        const employeeId = await sqlQueries.returnEmployeeId(employee);
         
         // Query the role id of the new role selected
-        const roleIdData = await queryAsync(`SELECT id FROM role WHERE title = '${role}'`);
-        const roleId = roleIdData[0].id;
+        const roleId = await sqlQueries.returnRoleId(role);
 
         // Amend the role of the employee
-        const updateEmployee = await queryAsync(`UPDATE employee SET role_id = ${roleId} WHERE id = ${employeeId};`);
+        const updateEmployee = await sqlQueries.updateRecord("employee", "role_id", roleId, "id", employeeId);
     
         // Display confirmation to state that the role of the employee was updated
         console.log(`\nThe role of ${employee} was successfully changed to ${role}\n`);
@@ -319,19 +270,9 @@ async function updateEmployeeRole() {
 
 async function updateEmployeeManager() {
     try {
-        // Query the database to return a list of employees
-        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
-        const employeesList = employeesListData.map(employee => employee.name);
-
-        // Generate a question using the returned employees
-        Questions.question7a.choices = employeesList;
-
-        // Query the database to return a list of managers
-        const managersListData = await queryAsync("SELECT DISTINCT CONCAT(B.first_name, ' ', B.last_name) AS name FROM employee AS A INNER JOIN employee AS B ON A.manager_id = B.id;");
-        const managersList = managersListData.map(manager => manager.name);
-
-        // Generate a question using the returned managers
-        Questions.question7b.choices = employeesList;
+        // Query the database for employees. Use employees as choices for employees and manager questions
+        Questions.question7a.choices = await sqlQueries.employeesList();
+        Questions.question7b.choices = Questions.question7a.choices;
 
         // Prompts user to select an employee
         const { employee } = await inquirer.prompt(Questions.question7a.returnString());
@@ -340,16 +281,14 @@ async function updateEmployeeManager() {
         const { manager } = await inquirer.prompt(Questions.question7b.returnString());
 
         // Query the employee.id of the employee to be have manager changed
-        const employeeIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
-        const employeeId = employeeIdData[0].id;
+        const employeeId = await sqlQueries.returnEmployeeId(employee);
 
         // Query the employee.id of the new manager selected
-        const managerIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${manager}'`);
-        const managerId = managerIdData[0].id;
+        const managerId = await sqlQueries.returnEmployeeId(manager);
 
         // Amend the manager_id of the employee
-        const updateEmployee = await queryAsync(`UPDATE employee SET manager_id = ${managerId} WHERE id = ${employeeId};`);
-
+        const updateEmployee = await sqlQueries.updateRecord("employee", "manager_id", managerId, "id", employeeId);
+    
         // Display confirmation to state that the manager of the employee was updated
         console.log(`\n${employee}'s manager was successfully changed to ${manager}\n`);
 

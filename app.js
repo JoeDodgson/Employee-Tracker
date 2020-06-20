@@ -331,9 +331,9 @@ async function updateEmployeeManager() {
         const managersList = managersListData.map(manager => manager.name);
 
         // Generate a question using the returned managers
+        Questions.question7b.choices = employeesList;
 
         // Prompts user to select an employee
-
 
         // Prompts user to select a new manager for the employee
 

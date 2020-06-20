@@ -304,6 +304,7 @@ async function updateEmployeeManager() {
 async function addRole() {
     try {
         // Query the database for departments. Use departments as question choices
+        Questions.question8a.choices = await sqlQueries.selectTableCol("name", "department");
         
         // Prompt the user to input details for new role: title, salary, department
 

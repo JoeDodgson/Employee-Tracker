@@ -214,17 +214,7 @@ async function removeEmployee() {
             const updateEmployeeManager = await sqlQueries.nullManagerId(employeeId);
             
             // Delete the record of the employee from the employee table
-            const deleteEmployee = await queryAsync(`DELETE FROM employee WHERE id = ${employeeId}`);
-
-            // Throw error if there are no affected rows 
-            if (deleteEmployee.affectedRows > 1) {
-                error = "More than one entry was removed from the employee tablean";
-                throw error;
-            }
-            else if (deleteEmployee.affectedRows === 0) {
-                error = "No entries were removed from the employee table\n";
-                throw error;
-            }
+            const deleteEmployee = await sqlQueries.deleteRecord("employee", "id", employeeId);
 
             // Display confirmation to state that employee has been removed from database
             console.log(`${employee} was removed from the database\n`);

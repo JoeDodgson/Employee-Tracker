@@ -47,6 +47,26 @@ const sqlQueries = {
         }
     },
     
+    // Delete record into database
+    deleteRecord: async (table, columnName, columnValue) => {
+        try {
+            const data = await queryAsync(`DELETE FROM ${table} WHERE ${columnName} = ${columnValue}`);
+            // Throw error if there are no or multiple affected rows 
+            if (data.affectedRows > 1) {
+                error = "More than one entry was added to the employee table";
+                throw error;
+            }
+            else if (data.affectedRows === 0) {
+                error = "No entries were added to the employee table";
+                throw error;
+            }
+            return data;
+        }
+        catch (error) {
+            console.log("ERROR - sql-queries.js - sqlQueries.deleteRecord(): " + error);
+        }
+    },
+    
     // Database query for all employees in a department
     employeesInDepartment: async department => {
         try {

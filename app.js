@@ -304,9 +304,10 @@ async function updateEmployeeManager() {
 async function addRole() {
     try {
         // Query the database for departments. Use departments as question choices
-        Questions.question8a.choices = await sqlQueries.selectTableCol("name", "department");
+        Questions.question8c.choices = await sqlQueries.selectTableCol("name", "department");
         
         // Prompt the user to input details for new role: title, salary, department
+        const newRole = await inquirer.prompt([Questions.question8a.returnString(), Questions.question8b.returnString(), Questions.question8c.returnString()]);
 
         // Query the database to find the corresponding department id
                 

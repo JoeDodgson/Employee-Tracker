@@ -275,7 +275,9 @@ async function removeEmployee() {
 async function updateEmployeeRole() {
     try {
         // Query the database to return a list of employees
-    
+        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
+        const employeesList = employeesListData.map(employee => employee.name);
+
         // Generate a question using the returned employees
     
         // Query the database to return a list of roles

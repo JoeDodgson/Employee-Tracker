@@ -279,6 +279,7 @@ async function updateEmployeeRole() {
         const employeesList = employeesListData.map(employee => employee.name);
 
         // Generate a question using the returned employees
+        Questions.question6a.choices = employeesList;
     
         // Query the database to return a list of roles
     

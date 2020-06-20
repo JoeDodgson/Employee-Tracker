@@ -2,10 +2,13 @@
 const inquirer = require("inquirer");
 const cTable = require("console.table");
 const mysql = require("mysql");
-const questions = require("./questions");
-const Questions = questions.Questions;
 const util = require("util");
 const { table, log } = require("console");
+
+// Require in files
+const questions = require("./questions");
+const Questions = questions.Questions;
+const sqlQueries = require("./sql-queries");
 
 let error = "";
 
@@ -103,12 +106,8 @@ async function selectAction() {
 
 async function viewEmployeesByDepartment() {
     try {
-        // Query the database to return a list of departments
-        const departmentsListData = await queryAsync("SELECT name FROM department;");
-        const departmentsList = departmentsListData.map(department => department.name);
-        
-        // Generate a question using the returned departments
-        Questions.question2.choices = departmentsList;
+        // Query the database for departments names. Use names as question choices
+        Questions.question2.choices = await sqlQueries.selectTableCol("name", "department");
         
         // Ask the user to select a department
         const { department } = await inquirer.prompt(Questions.question2.returnString());

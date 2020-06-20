@@ -310,6 +310,8 @@ async function viewRoles() {
         const allRoles = await sqlQueries.allRoles();
         
         // Display list of roles using cTable formatting
+        const allRolesTable = cTable.getTable(allRoles);
+        console.log(`List of all roles:\n\n` + allRolesTable);
         
         selectAction();
     }

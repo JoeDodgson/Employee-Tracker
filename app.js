@@ -351,9 +351,10 @@ async function updateEmployeeManager() {
         const updateEmployee = await queryAsync(`UPDATE employee SET manager_id = ${managerId} WHERE id = ${employeeId};`);
 
         // Display confirmation to state that the manager of the employee was updated
+        console.log(`\n${employee}'s manager was successfully changed to ${manager}\n`);
 
         // Display full list of employees (so user can see their new employee has been added)
-        selectAction();
+        viewAllEmployees();
 
     }
     catch (error) {

@@ -113,7 +113,7 @@ async function viewEmployeesByDepartment() {
         const { department } = await inquirer.prompt(Questions.question2.returnString());
         
         // Query the database for all employees using the selected department
-        const employeesInDepartment = await queryAsync(`SELECT A.id, CONCAT(A.first_name, ' ', A.last_name) AS name, title, salary, CONCAT(B.first_name, ' ', B.last_name) AS manager_name FROM employee AS A LEFT JOIN employee AS B ON A.manager_id = B.id LEFT JOIN role ON A.role_id = role.id LEFT JOIN department ON role.department_id = department.id WHERE department.name = '${department}';`);
+        const employeesInDepartment = await sqlQueries.employeesInDepartment(department);
         
         // Display list of employees in the selected department using cTable formatting
         const employeesInDepartmentTable = cTable.getTable(employeesInDepartment);

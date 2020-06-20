@@ -47,6 +47,7 @@ Questions.question6a = new ChoiceQuestion("Select an employee whose role should 
 Questions.question6b = new ChoiceQuestion("Select a new role for this employee", "role", []);
 Questions.question7a = new ChoiceQuestion("Select an employee whose manager should change", "employee", []);
 Questions.question7b = Questions.question3;
+Questions.question8a = Questions.question2;
 
 // Export classes
 module.exports = {

@@ -208,10 +208,10 @@ async function removeEmployee() {
         // If yes, perform SQL deletion of record
         if (confirmYN === "Yes") {
             // Query the employee.id of the employee to be removed
-            const employeeId = await sqlQueries.employeeId(employee);
+            const employeeId = await sqlQueries.returnEmployeeId(employee);
             
             // Amend manager_id to null for records where the removed employee was selected as a manager
-            const updateEmployeeManager = await queryAsync(`UPDATE employee SET manager_id = null WHERE manager_id = '${employeeId}'`);
+            const updateEmployeeManager = await sqlQueries.nullManagerId(employeeId);
             
             // Delete the record of the employee from the employee table
             const deleteEmployee = await queryAsync(`DELETE FROM employee WHERE id = ${employeeId}`);

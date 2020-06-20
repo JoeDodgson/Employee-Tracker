@@ -105,7 +105,7 @@ const sqlQueries = {
         }
     },
 
-    // Database query for all employees who work for specified manager
+    // Database query for roleId based on role title
     returnRoleId: async role => {
         try {
             const data = await queryAsync(`SELECT id AS roleId FROM role WHERE title = '${role}'`);
@@ -126,6 +126,17 @@ const sqlQueries = {
         }
         catch (error) {
             console.log("ERROR - sql-queries.js - sqlQueries.returnManagerId(): " + error);
+        }
+    },
+
+    // Database query to update manager_id based on managerId
+    nullManagerId: async managerId => {
+        try {
+            const data = await queryAsync(`UPDATE employee SET manager_id = null WHERE manager_id = '${managerId}'`);
+            return data;
+        }
+        catch (error) {
+            console.log("ERROR - sql-queries.js - sqlQueries.nullManagerId(): " + error);
         }
     }
 }

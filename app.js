@@ -295,7 +295,13 @@ async function updateEmployeeRole() {
         const { role } = await inquirer.prompt(Questions.question6b.returnString());
     
         // Query the employee.id of the employee to be have role changed
-    
+        const employeeIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
+        const employeeId = employeeIdData[0].id;
+        
+        // Query the role id of the new role selected
+        const roleIdData = await queryAsync(`SELECT id FROM role WHERE title = '${role}'`);
+        const roleId = roleIdData[0].id;
+
         // Amend the role of the employee
     
         // Display confirmation to state that the role of the employee was updated

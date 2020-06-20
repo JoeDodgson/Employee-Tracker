@@ -273,9 +273,48 @@ async function removeEmployee() {
 }
 
 async function updateEmployeeRole() {
-    console.log("updateEmployeeRole function" );
+    try {
+        // Query the database to return a list of employees
+        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
+        const employeesList = employeesListData.map(employee => employee.name);
+
+        // Generate a question using the returned employees
+        Questions.question6a.choices = employeesList;
+        
+        // Query the database to return a list of roles
+        const rolesListData = await queryAsync("SELECT title FROM role;");
+        const rolesList = rolesListData.map(role => role.title);
+        
+        // Generate a question using the returned roles
+        Questions.question6b.choices = rolesList;
     
-    selectAction();
+        // Prompts user to select an employee
+        const { employee } = await inquirer.prompt(Questions.question6a.returnString());
+        
+        // Prompts user to select a new role for the employee
+        const { role } = await inquirer.prompt(Questions.question6b.returnString());
+    
+        // Query the employee.id of the employee to be have role changed
+        const employeeIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
+        const employeeId = employeeIdData[0].id;
+        
+        // Query the role id of the new role selected
+        const roleIdData = await queryAsync(`SELECT id FROM role WHERE title = '${role}'`);
+        const roleId = roleIdData[0].id;
+
+        // Amend the role of the employee
+        const updateEmployee = await queryAsync(`UPDATE employee SET role_id = ${roleId} WHERE id = ${employeeId};`);
+    
+        // Display confirmation to state that the role of the employee was updated
+        console.log(`\nThe role of ${employee} was successfully changed to ${role}\n`);
+    
+        // Display full list of employees (so user can see their new employee has been added)
+        viewAllEmployees();
+
+    }
+    catch {
+        console.log("ERROR - app.js - updateEmployeeRole(): " + error);
+    }
 }
 
 async function updateEmployeeManager() {

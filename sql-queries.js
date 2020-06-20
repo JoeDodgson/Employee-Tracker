@@ -83,6 +83,18 @@ const sqlQueries = {
         catch (error) {
             console.log("ERROR - sql-queries.js - sqlQueries.returnRoleId(): " + error);
         }
+    },
+
+    // Database query for all employees who work for specified manager
+    returnManagerId: async manager => {
+        try {
+            const data = await queryAsync(`SELECT id AS managerId FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${manager}'`);
+            const managerId = data[0].managerId;
+            return managerId;
+        }
+        catch (error) {
+            console.log("ERROR - sql-queries.js - sqlQueries.returnManagerId(): " + error);
+        }
     }
 }
 

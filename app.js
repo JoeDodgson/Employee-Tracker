@@ -169,8 +169,7 @@ async function addEmployee() {
         }
         else {
             // Query the database to find the corresponding manager id
-            const queryManagerId = await queryAsync(`SELECT id AS managerId FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${newEmployee.manager}'`);
-            newEmployee.managerId = queryManagerId[0].managerId;
+            newEmployee.managerId = await sqlQueries.returnManagerId(newEmployee.manager);
         }
 
         // Insert new entry into the database

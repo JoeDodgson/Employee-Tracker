@@ -42,7 +42,7 @@ async function viewAllEmployees() {
 
         selectAction();
     }
-    catch {
+    catch (error) {
         console.log("ERROR - app.js - viewAllEmployees(): " + error);
     }
 }
@@ -96,7 +96,7 @@ async function selectAction() {
                 break;
         }
     }
-    catch {
+    catch (error) {
         console.log("ERROR - app.js - selectAction(): " + error);
     }
 }
@@ -122,7 +122,7 @@ async function viewEmployeesByDepartment() {
         
         selectAction();
     }
-    catch {
+    catch (error) {
         console.log("ERROR - app.js - viewEmployeesByDepartment(): " + error);
     }
 }
@@ -148,7 +148,7 @@ async function viewEmployeesByManager() {
         
         selectAction();
     }
-    catch {
+    catch (error) {
         console.log("ERROR - app.js - viewEmployeesByManager(): " + error);        
     }
 }
@@ -213,7 +213,7 @@ async function addEmployee() {
         // Display full list of employees (so user can see their new employee has been added)
         viewAllEmployees();
     }
-    catch {
+    catch (error) {
         console.log("ERROR - app.js - addEmployee(): " + error);        
     }
 }
@@ -267,7 +267,7 @@ async function removeEmployee() {
         // Display full list of employees (so user can see their new employee has been added)
         viewAllEmployees();
     }
-    catch {
+    catch (error) {
         console.log("ERROR - app.js - removeEmployee(): " + error);
     }
 }
@@ -312,7 +312,7 @@ async function updateEmployeeRole() {
         viewAllEmployees();
 
     }
-    catch {
+    catch (error) {
         console.log("ERROR - app.js - updateEmployeeRole(): " + error);
     }
 }

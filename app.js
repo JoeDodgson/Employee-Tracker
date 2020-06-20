@@ -302,9 +302,34 @@ async function updateEmployeeManager() {
 }
 
 async function addRole() {
-    console.log("addRole function" );
-    
-    selectAction();
+    try {
+        // Query the database for departments. Use departments as question choices
+        Questions.question8c.choices = await sqlQueries.selectTableCol("name", "department");
+        
+        // Prompt the user to input details for new role: title, salary, department
+        const newRole = await inquirer.prompt([Questions.question8a.returnString(), Questions.question8b.returnString(), Questions.question8c.returnString()]);
+
+        // Query the database to find the corresponding department id
+        newRole.departmentId = sqlQueries.returnDepartmentId(newRole.department);
+                
+        // Assign record values into colValues object
+        const colValues = {
+            title: newRole.title,
+            salary: newRole.salary,
+            department_id: newRole.departmentId
+        };
+        
+        // Insert new entry into the database
+        const addRole = await sqlQueries.insertRecord("role", colValues);
+
+        // Display confirmation to state that role has been added to database
+        console.log(`\nThe new role of ${newRole.title} was successfully added\n`);
+
+        // Display full list of roles (so user can see their new role has been added)
+    }
+    catch (error) {
+        console.log("ERROR - app.js - addRole(): " + error);        
+    }
 }
 
 async function removeRole() {

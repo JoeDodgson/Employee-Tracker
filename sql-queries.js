@@ -133,7 +133,7 @@ const sqlQueries = {
         }
     },
 
-    // Database query for all employees who work for specified manager
+    // Database query for employeeId based on employee name
     returnEmployeeId: async employee => {
         try {
             const data = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
@@ -157,7 +157,7 @@ const sqlQueries = {
         }
     },
 
-    // Database query for all employees who work for specified manager
+    // Database query for managerId based on manager name
     returnManagerId: async manager => {
         try {
             const data = await queryAsync(`SELECT id AS managerId FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${manager}'`);
@@ -166,6 +166,18 @@ const sqlQueries = {
         }
         catch (error) {
             console.log("ERROR - sql-queries.js - sqlQueries.returnManagerId(): " + error);
+        }
+    },
+
+    // Database query for departmentId based on department name
+    returnDepartmentId: async department => {
+        try {
+            const data = await queryAsync(`SELECT id AS departmentId FROM department WHERE name = '${department}'`);
+            const departmentId = data[0].departmentId;
+            return departmentId;
+        }
+        catch (error) {
+            console.log("ERROR - sql-queries.js - sqlQueries.returnDepartmentId(): " + error);
         }
     },
 

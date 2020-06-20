@@ -48,6 +48,17 @@ const sqlQueries = {
         catch (error) {
             console.log("ERROR - sql-queries.js - sqlQueries.employeesInDepartment(): " + error);
         }
+    },
+
+    // Database query for all employees who work for specified manager
+    employeesUnderManager: async manager => {
+        try {
+            const data = await queryAsync(`SELECT A.id, CONCAT(A.first_name, ' ', A.last_name) AS name, title, salary, department.name AS department FROM employee AS A LEFT JOIN employee AS B ON A.manager_id = B.id LEFT JOIN role ON A.role_id = role.id LEFT JOIN department ON role.department_id = department.id WHERE CONCAT(B.first_name, ' ', B.last_name) = '${manager}';`);
+            return data;
+        }
+        catch (error) {
+            console.log("ERROR - sql-queries.js - sqlQueries.employeesInDepartment(): " + error);
+        }
     }
 }
 

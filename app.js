@@ -270,19 +270,9 @@ async function updateEmployeeRole() {
 
 async function updateEmployeeManager() {
     try {
-        // Query the database to return a list of employees
-        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
-        const employeesList = employeesListData.map(employee => employee.name);
-
-        // Generate a question using the returned employees
-        Questions.question7a.choices = employeesList;
-
-        // Query the database to return a list of managers
-        const managersListData = await queryAsync("SELECT DISTINCT CONCAT(B.first_name, ' ', B.last_name) AS name FROM employee AS A INNER JOIN employee AS B ON A.manager_id = B.id;");
-        const managersList = managersListData.map(manager => manager.name);
-
-        // Generate a question using the returned managers
-        Questions.question7b.choices = employeesList;
+        // Query the database for employees. Use employees as choices for employees and manager questions
+        Questions.question7a.choices = await sqlQueries.employeesList();
+        Questions.question7b.choices = Questions.question7a.choices;
 
         // Prompts user to select an employee
         const { employee } = await inquirer.prompt(Questions.question7a.returnString());
@@ -291,16 +281,14 @@ async function updateEmployeeManager() {
         const { manager } = await inquirer.prompt(Questions.question7b.returnString());
 
         // Query the employee.id of the employee to be have manager changed
-        const employeeIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
-        const employeeId = employeeIdData[0].id;
+        const employeeId = await sqlQueries.returnEmployeeId(employee);
 
         // Query the employee.id of the new manager selected
-        const managerIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${manager}'`);
-        const managerId = managerIdData[0].id;
+        const managerId = await sqlQueries.returnEmployeeId(manager);
 
         // Amend the manager_id of the employee
-        const updateEmployee = await queryAsync(`UPDATE employee SET manager_id = ${managerId} WHERE id = ${employeeId};`);
-
+        const updateEmployee = await sqlQueries.updateRecord("employee", "manager_id", managerId, "id", employeeId);
+    
         // Display confirmation to state that the manager of the employee was updated
         console.log(`\n${employee}'s manager was successfully changed to ${manager}\n`);
 

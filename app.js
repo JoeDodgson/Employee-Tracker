@@ -306,7 +306,7 @@ async function updateEmployeeRole() {
         const updateEmployee = await queryAsync(`UPDATE employee SET role_id = ${roleId} WHERE id = ${employeeId};`);
     
         // Display confirmation to state that the role of the employee was updated
-        console.log(`The role of ${employee} was successfully changed to ${role}`);
+        console.log(`\nThe role of ${employee} was successfully changed to ${role}\n`);
     
         // Display full list of employees (so user can see their new employee has been added)
         viewAllEmployees();

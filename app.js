@@ -273,9 +273,32 @@ async function removeEmployee() {
 }
 
 async function updateEmployeeRole() {
-    console.log("updateEmployeeRole function" );
+    try {
+        // Query the database to return a list of employees
     
-    selectAction();
+        // Generate a question using the returned employees
+    
+        // Query the database to return a list of roles
+    
+        // Generate a question using the returned roles
+    
+        // Prompts user to select an employee
+    
+        // Prompts user to select a new role for the employee
+    
+        // Query the employee.id of the employee to be have role changed
+    
+        // Amend the role of the employee
+    
+        // Display confirmation to state that the role of the employee was updated
+    
+        // Display full list of employees (so user can see their new employee has been added)
+        viewAllEmployees();
+
+    }
+    catch {
+        console.log("ERROR - app.js - updateEmployeeRole(): " + error);
+    }
 }
 
 async function updateEmployeeManager() {

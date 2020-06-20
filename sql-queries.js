@@ -31,6 +31,15 @@ const sqlQueries = {
     insertRecord: async (table, colValues) => {
         try {
             const data = await queryAsync(`INSERT INTO ${table} SET ?`, colValues);
+            // Throw error if there are no or multiple affected rows 
+            if (data.affectedRows > 1) {
+                error = "More than one entry was added to the employee table";
+                throw error;
+            }
+            else if (data.affectedRows === 0) {
+                error = "No entries were added to the employee table";
+                throw error;
+            }
             return data;
         }
         catch (error) {

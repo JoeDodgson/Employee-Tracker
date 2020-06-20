@@ -181,17 +181,7 @@ async function addEmployee() {
         };
         
         // Insert new entry into the database
-        const addEmployee = await sqlQueries.insertRecord("employee",colValues);
-        
-        // Throw error if there are no or multiple affected rows 
-        if (addEmployee.affectedRows > 1) {
-            error = "More than one entry was added to the employee table";
-            throw error;
-        }
-        else if (addEmployee.affectedRows === 0) {
-            error = "No entries were added to the employee table";
-            throw error;
-        }
+        const addEmployee = await sqlQueries.insertRecord("employee", colValues);
 
         // Display confirmation to state that employee has been added to database
         console.log(`${newEmployee.firstName} ${newEmployee.lastName} has been added to the database`);

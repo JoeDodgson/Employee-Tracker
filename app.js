@@ -196,24 +196,19 @@ async function addEmployee() {
 
 async function removeEmployee() {
     try {
-        // Query the database to return a list of employees
-        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
-        const employeesList = employeesListData.map(employee => employee.name);
+        // Query the database for employees. Use employees as question choices
+        Questions.question5a.choices = await sqlQueries.employeesList();
 
-        // Generate a question using the returned employees
-        Questions.question5a.choices = employeesList;
-
-        // Prompts user to select an employee
+        // Prompt user to select an employee
         const { employee } = await inquirer.prompt(Questions.question5a.returnString());
         
-        // Prompts "When you remove an employer from this database, you cannot retrieve it. Do you still wish to remove this employee?"
+        // Prompt "When you remove an employer from this database, you cannot retrieve it. Do you still wish to remove this employee?"
         const { confirmYN } = await inquirer.prompt(Questions.question5b.returnString());
 
         // If yes, perform SQL deletion of record
         if (confirmYN === "Yes") {
             // Query the employee.id of the employee to be removed
-            const employeeIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
-            const employeeId = employeeIdData[0].id;
+            const employeeId = await sqlQueries.employeeId(employee);
             
             // Amend manager_id to null for records where the removed employee was selected as a manager
             const updateEmployeeManager = await queryAsync(`UPDATE employee SET manager_id = null WHERE manager_id = '${employeeId}'`);

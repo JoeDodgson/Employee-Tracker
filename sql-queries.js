@@ -94,6 +94,18 @@ const sqlQueries = {
     },
 
     // Database query for all employees who work for specified manager
+    returnEmployeeId: async employee => {
+        try {
+            const data = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
+            const employeeId = data[0].id;
+            return employeeId;
+        }
+        catch (error) {
+            console.log("ERROR - sql-queries.js - sqlQueries.returnEmployeeId(): " + error);
+        }
+    },
+
+    // Database query for all employees who work for specified manager
     returnRoleId: async role => {
         try {
             const data = await queryAsync(`SELECT id AS roleId FROM role WHERE title = '${role}'`);

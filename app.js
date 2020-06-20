@@ -310,12 +310,17 @@ async function addRole() {
         const newRole = await inquirer.prompt([Questions.question8a.returnString(), Questions.question8b.returnString(), Questions.question8c.returnString()]);
 
         // Query the database to find the corresponding department id
-        const departmendId = sqlQueries.returnDepartmentId(newRole.department);
+        newRole.departmentId = sqlQueries.returnDepartmentId(newRole.department);
                 
         // Assign record values into colValues object
-        
+        const colValues = {
+            title: newRole.title,
+            salary: newRole.salary,
+            department_id: newRole.departmentId
+        };
         
         // Insert new entry into the database
+        const addRole = await sqlQueries.insertRecord("role", colValues);
 
         // Display confirmation to state that role has been added to database
 

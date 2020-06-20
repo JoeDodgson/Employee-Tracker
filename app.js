@@ -323,6 +323,7 @@ async function addRole() {
         const addRole = await sqlQueries.insertRecord("role", colValues);
 
         // Display confirmation to state that role has been added to database
+        console.log(`\nThe new role of ${newRole.title} was successfully added\n`);
 
         // Display full list of roles (so user can see their new role has been added)
     }

@@ -80,21 +80,24 @@ async function selectAction() {
                 updateEmployeeManager();
                 break;
             case Questions.question1.choices[7]:
-                addRole();
+                viewRoles();
                 break;
             case Questions.question1.choices[8]:
-                removeRole();
+                addRole();
                 break;
             case Questions.question1.choices[9]:
-                addDepartment();
+                removeRole();
                 break;
             case Questions.question1.choices[10]:
-                removeDepartment();
+                addDepartment();
                 break;
             case Questions.question1.choices[11]:
-                viewDepartmentSalary();
+                removeDepartment();
                 break;
             case Questions.question1.choices[12]:
+                viewDepartmentSalary();
+                break;
+            case Questions.question1.choices[13]:
                 exit();
                 break;
         }
@@ -304,6 +307,7 @@ async function updateEmployeeManager() {
 async function viewRoles() {
     try { 
         // Query the database for all roles
+        const allRoles = await sqlQueries.allRoles();
         
         // Display list of roles using cTable formatting
         
@@ -339,6 +343,7 @@ async function addRole() {
         console.log(`\nThe new role of ${newRole.title} was successfully added\n`);
 
         // Display full list of roles (so user can see their new role has been added)
+        viewRoles();
     }
     catch (error) {
         console.log("ERROR - app.js - addRole(): " + error);        

@@ -340,6 +340,8 @@ async function updateEmployeeManager() {
         const { manager } = await inquirer.prompt(Questions.question7b.returnString());
 
         // Query the employee.id of the employee to be have manager changed
+        const employeeIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
+        const employeeId = employeeIdData[0].id;
 
         // Query the employee.id of the new manager selected
 

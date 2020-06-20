@@ -318,9 +318,34 @@ async function updateEmployeeRole() {
 }
 
 async function updateEmployeeManager() {
-    console.log("updateEmployeeManager function" );
-    
-    selectAction();
+    try {
+        // Query the database to return a list of employees
+
+        // Generate a question using the returned employees
+
+        // Query the database to return a list of managers
+
+        // Generate a question using the returned managers
+
+        // Prompts user to select an employee
+
+        // Prompts user to select a new manager for the employee
+
+        // Query the employee.id of the employee to be have manager changed
+
+        // Query the employee.id of the new manager selected
+
+        // Amend the manager_id of the employee
+
+        // Display confirmation to state that the manager of the employee was updated
+
+        // Display full list of employees (so user can see their new employee has been added)
+        selectAction();
+
+    }
+    catch (error) {
+        console.log("ERROR - app.js - updateEmployeeRole(): " + error);
+    }
 }
 
 async function addRole() {

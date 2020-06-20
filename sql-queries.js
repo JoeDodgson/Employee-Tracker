@@ -46,7 +46,19 @@ const sqlQueries = {
             return dataList;
         }
         catch (error) {
-            console.log("ERROR - sql-queries.js - sqlQueries.employeesInDepartment(): " + error);
+            console.log("ERROR - sql-queries.js - sqlQueries.managersList(): " + error);
+        }
+    },
+
+    // Database query for all employees
+    employeesList: async () => {
+        try {
+            const data = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
+            const dataList = data.map(employee => employee.name);
+            return dataList;
+        }
+        catch (error) {
+            console.log("ERROR - sql-queries.js - sqlQueries.employeesList(): " + error);
         }
     },
 
@@ -57,7 +69,7 @@ const sqlQueries = {
             return data;
         }
         catch (error) {
-            console.log("ERROR - sql-queries.js - sqlQueries.employeesInDepartment(): " + error);
+            console.log("ERROR - sql-queries.js - sqlQueries.employeesUnderManager(): " + error);
         }
     }
 }

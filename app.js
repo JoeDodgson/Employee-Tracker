@@ -128,7 +128,7 @@ async function viewEmployeesByDepartment() {
 
 async function viewEmployeesByManager() {
     try {
-        // Query the database for a list of managers and generate a question using the returned managers
+        // Query the database for managers. Use managers as question choices
         Questions.question3.choices = await sqlQueries.managersList();
         
         // Ask the user to select a manager
@@ -150,20 +150,12 @@ async function viewEmployeesByManager() {
 
 async function addEmployee() {
     try {
-        // Query the database to return a list of roles
-        const rolesListData = await queryAsync("SELECT title FROM role;");
-        const rolesList = rolesListData.map(role => role.title);
+        // Query the database for roles. Use roles as question choices
+        Questions.question4c.choices = await sqlQueries.selectTableCol("title", "role");
         
-        // Generate a question using the returned roles
-        Questions.question4c.choices = rolesList;
-        
-        // Query the database to return a list of employees
-        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
-        const employeesList = employeesListData.map(employee => employee.name);
-        employeesList.push("No manager");
-
-        // Generate a question using the returned employees
-        Questions.question4d.choices = employeesList;
+        // Query the database for employees. Use employees as manager choices. Include 'no manager' option
+        Questions.question4d.choices = await sqlQueries.employeesList();
+        Questions.question4d.choices.push("No manager");
         
         // Prompt the user to input details for new employee: first name, last name, role, manager
         const newEmployee = await inquirer.prompt([Questions.question4a.returnString(), Questions.question4b.returnString(), Questions.question4c.returnString(), Questions.question4d.returnString()]);

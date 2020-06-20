@@ -301,6 +301,19 @@ async function updateEmployeeManager() {
     }
 }
 
+async function viewRoles() {
+    try { 
+        // Query the database for all roles
+        
+        // Display list of roles using cTable formatting
+        
+        selectAction();
+    }
+    catch (error) {
+        console.log("ERROR - app.js - viewRoles(): " + error);
+    }
+}
+
 async function addRole() {
     try {
         // Query the database for departments. Use departments as question choices

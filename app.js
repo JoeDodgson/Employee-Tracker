@@ -318,9 +318,48 @@ async function updateEmployeeRole() {
 }
 
 async function updateEmployeeManager() {
-    console.log("updateEmployeeManager function" );
-    
-    selectAction();
+    try {
+        // Query the database to return a list of employees
+        const employeesListData = await queryAsync("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee;");
+        const employeesList = employeesListData.map(employee => employee.name);
+
+        // Generate a question using the returned employees
+        Questions.question7a.choices = employeesList;
+
+        // Query the database to return a list of managers
+        const managersListData = await queryAsync("SELECT DISTINCT CONCAT(B.first_name, ' ', B.last_name) AS name FROM employee AS A INNER JOIN employee AS B ON A.manager_id = B.id;");
+        const managersList = managersListData.map(manager => manager.name);
+
+        // Generate a question using the returned managers
+        Questions.question7b.choices = employeesList;
+
+        // Prompts user to select an employee
+        const { employee } = await inquirer.prompt(Questions.question7a.returnString());
+        
+        // Prompts user to select a new manager for the employee
+        const { manager } = await inquirer.prompt(Questions.question7b.returnString());
+
+        // Query the employee.id of the employee to be have manager changed
+        const employeeIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${employee}'`);
+        const employeeId = employeeIdData[0].id;
+
+        // Query the employee.id of the new manager selected
+        const managerIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${manager}'`);
+        const managerId = managerIdData[0].id;
+
+        // Amend the manager_id of the employee
+        const updateEmployee = await queryAsync(`UPDATE employee SET manager_id = ${managerId} WHERE id = ${employeeId};`);
+
+        // Display confirmation to state that the manager of the employee was updated
+        console.log(`\n${employee}'s manager was successfully changed to ${manager}\n`);
+
+        // Display full list of employees (so user can see their new employee has been added)
+        viewAllEmployees();
+
+    }
+    catch (error) {
+        console.log("ERROR - app.js - updateEmployeeRole(): " + error);
+    }
 }
 
 async function addRole() {

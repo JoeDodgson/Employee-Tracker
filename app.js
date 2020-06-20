@@ -302,9 +302,24 @@ async function updateEmployeeManager() {
 }
 
 async function addRole() {
-    console.log("addRole function" );
-    
-    selectAction();
+    try {
+        // Query the database for departments. Use departments as question choices
+        
+        // Prompt the user to input details for new role: title, salary, department
+
+        // Query the database to find the corresponding department id
+                
+        // Assign record values into colValues object
+        
+        // Insert new entry into the database
+
+        // Display confirmation to state that role has been added to database
+
+        // Display full list of roles (so user can see their new role has been added)
+    }
+    catch (error) {
+        console.log("ERROR - app.js - addRole(): " + error);        
+    }
 }
 
 async function removeRole() {

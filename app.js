@@ -344,6 +344,8 @@ async function updateEmployeeManager() {
         const employeeId = employeeIdData[0].id;
 
         // Query the employee.id of the new manager selected
+        const managerIdData = await queryAsync(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${manager}'`);
+        const managerId = employeeIdData[0].id;
 
         // Amend the manager_id of the employee
 

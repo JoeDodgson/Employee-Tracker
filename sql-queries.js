@@ -103,6 +103,17 @@ const sqlQueries = {
         }
     },
     
+    // Database query for all roles
+    rolesDetails: async () => {
+        try {
+            const data = await queryAsync(`SELECT role.id, title, salary, department.name AS department FROM role LEFT JOIN department ON department_id = department.id ORDER BY role.id;`);
+            return data;
+        }
+        catch (error) {
+            console.log("ERROR - sql-queries.js - sqlQueries.rolesDetails(): " + error);
+        }
+    },
+    
     // Database query for all employees in a department
     employeesInDepartment: async department => {
         try {

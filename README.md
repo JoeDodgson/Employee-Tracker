@@ -42,6 +42,7 @@ A node.js application which manages an SQL database of employee, role and depart
 
 ## Usage
 To run the application, open your terminal and navigate to the downloaded repository. Then type the following command and hit enter:
+
 `node app.js`
 
 Follow the on screen prompts in the terminal to manage your employee database. You can add, remove and update employees, roles and departments.

@@ -330,7 +330,7 @@ async function addRole() {
         const newRole = await inquirer.prompt([Questions.question8a.returnString(), Questions.question8b.returnString(), Questions.question8c.returnString()]);
 
         // Query the database to find the corresponding department id
-        newRole.departmentId = sqlQueries.returnDepartmentId(newRole.department);
+        newRole.departmentId = await sqlQueries.returnDepartmentId(newRole.department);
                 
         // Assign record values into colValues object
         const colValues = {
@@ -444,19 +444,22 @@ async function removeDepartment() {
         // If yes, perform SQL deletion of record
         if (confirmYN === "Yes") {
             // Query the department.id of the department to be removed
-            departmentId = sqlQueries.returnDepartmentId(department);
+            const departmentId = await sqlQueries.returnDepartmentId(department);
                         
             // Delete the record of the department from the department table
+            const deleteDepartment = await sqlQueries.deleteRecord("department", "id", departmentId);
 
             // Display confirmation to state that department has been removed from database
+            console.log(`\nThe ${department} department was successfully removed\n`);
         }
         
         // If no, confirm that the employee was not removed from the database
         else {
+            console.log(`\nThe ${department} department was not removed\n`);
         }
 
         // Display full list of departments (so user can see their new department has been removed)
-        viewdepartments();
+        viewDepartments();
     }
     catch (error) {
         console.log("ERROR - app.js - removeDepartment(): " + error);

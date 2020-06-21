@@ -366,6 +366,7 @@ async function removeRole() {
         // If yes, perform SQL deletion of record
         if (confirmYN === "Yes") {
             // Query the role.id of the role to be removed
+            const roleId = await sqlQueries.returnRoleId(role);
             
             // Amend role_id to null for records where employee's role has been removed
             
@@ -379,7 +380,7 @@ async function removeRole() {
         }
 
         // Display full list of roles (so user can see their new role has been added)
-        viewAllRoles();
+        // viewAllRoles();
     }
     catch (error) {
         console.log("ERROR - app.js - removeRole(): " + error);

@@ -472,8 +472,10 @@ async function viewDepartmentSalary() {
         Questions.question12.choices = await sqlQueries.selectTableCol("name", "department");
 
         // Prompt user to select an department to see salary
+        const { department } = await inquirer.prompt(Questions.question12.returnString());
         
         // Query the department.id of the department to see salary
+        const departmentId = await sqlQueries.returnDepartmentId(department);
                     
         // Query the database for total salary
 

@@ -16,6 +16,11 @@ const queryAsync = util.promisify(connection.query).bind(connection);
 
 const sqlQueries = {
     // Database query for one column in one table
+    endConnection: () => {
+        connection.end();
+    },
+    
+    // Database query for one column in one table
     selectTableCol: async (column, table) => {
         try {
             const data = await queryAsync(`SELECT ${column} FROM ${table};`);

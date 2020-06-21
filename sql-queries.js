@@ -190,6 +190,18 @@ const sqlQueries = {
         catch (error) {
             console.log("ERROR - sql-queries.js - sqlQueries.returnDepartmentId(): " + error);
         }
+    },
+
+    // Database query for total salary of department based on department ID
+    totalDepartmentSalary: async departmentId => {
+        try {
+            const data = await queryAsync(`SELECT SUM(salary) AS totalSalary FROM employee LEFT JOIN role ON employee.role_id = role.id WHERE department_id = ${departmentId};`);
+            const totalSalary = data[0].totalSalary;
+            return totalSalary;
+        }
+        catch (error) {
+            console.log("ERROR - sql-queries.js - sqlQueries.totalDepartmentSalary(): " + error);
+        }
     }
 }
 

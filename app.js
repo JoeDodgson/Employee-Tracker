@@ -444,6 +444,7 @@ async function removeDepartment() {
         // If yes, perform SQL deletion of record
         if (confirmYN === "Yes") {
             // Query the department.id of the department to be removed
+            departmentId = sqlQueries.returnDepartmentId(department);
                         
             // Delete the record of the department from the department table
 

@@ -494,6 +494,7 @@ async function viewDepartmentSalary() {
 // Displays exit message and ends database connection 
 function exit() {
     console.log("Exiting application");
+    sqlQueries.endConnection();
     connection.end();
 }
 

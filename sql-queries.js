@@ -190,17 +190,6 @@ const sqlQueries = {
         catch (error) {
             console.log("ERROR - sql-queries.js - sqlQueries.returnDepartmentId(): " + error);
         }
-    },
-
-    // Database query to update manager_id based on managerId
-    nullManagerId: async managerId => {
-        try {
-            const data = await queryAsync(`UPDATE employee SET manager_id = null WHERE manager_id = '${managerId}'`);
-            return data;
-        }
-        catch (error) {
-            console.log("ERROR - sql-queries.js - sqlQueries.nullManagerId(): " + error);
-        }
     }
 }
 

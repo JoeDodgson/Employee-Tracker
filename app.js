@@ -469,6 +469,7 @@ async function removeDepartment() {
 async function viewDepartmentSalary() {
     try {
         // Query the database for departments. Use departments as question choices
+        Questions.question12.choices = await sqlQueries.selectTableCol("name", "department");
 
         // Prompt user to select an department to see salary
         

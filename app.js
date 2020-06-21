@@ -306,12 +306,12 @@ async function updateEmployeeManager() {
 
 async function viewRoles() {
     try { 
-        // Query the database for all roles
-        const allRoles = await sqlQueries.allRoles();
+        // Query the database for all roles, including salary and department
+        const rolesDetails = await sqlQueries.rolesDetails();
         
         // Display list of roles using cTable formatting
-        const allRolesTable = cTable.getTable(allRoles);
-        console.log(`List of all roles:\n\n` + allRolesTable);
+        const rolesDetailsTable = cTable.getTable(rolesDetails);
+        console.log(`List of all roles:\n\n` + rolesDetailsTable);
         
         selectAction();
     }
@@ -353,9 +353,39 @@ async function addRole() {
 }
 
 async function removeRole() {
-    console.log("removeRole function" );
-    
-    selectAction();
+    try {
+        // Query the database for roles. Use roles as question choices
+        Questions.question9a.choices = await sqlQueries.selectTableCol("title", "role");
+
+        // Prompt user to select an role
+        const { role } = await inquirer.prompt(Questions.question9a.returnString());
+        
+        // Prompt "When you remove a role from this database, you cannot retrieve it. Do you still wish to remove this role?"
+        const { confirmYN } = await inquirer.prompt(Questions.question9b.returnString());
+
+        // If yes, perform SQL deletion of record
+        if (confirmYN === "Yes") {
+            // Query the role.id of the role to be removed
+            const roleId = await sqlQueries.returnRoleId(role);
+                        
+            // Delete the record of the role from the role table
+            const deleteRole = await sqlQueries.deleteRecord("role", "id", roleId);            
+
+            // Display confirmation to state that role has been removed from database
+            console.log(`\nThe role of ${role} was successfully removed from the database\n`);
+        }
+        
+        // If no, confirm that the employee was not removed from the database
+        else {
+            console.log(`\nThe role of ${role} was not removed from the database\n`);
+        }
+
+        // Display full list of roles (so user can see their new role has been added)
+        // viewAllRoles();
+    }
+    catch (error) {
+        console.log("ERROR - app.js - removeRole(): " + error);
+    }
 }
 
 async function addDepartment() {

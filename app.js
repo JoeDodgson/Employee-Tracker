@@ -433,12 +433,14 @@ async function addDepartment() {
 async function removeDepartment() {
     try {
         // Query the database for departments. Use departments as question choices
-        Questions.question9a.choices = await sqlQueries.selectTableCol("name", "department");
+        Questions.question11.choices = await sqlQueries.selectTableCol("name", "department");
 
         // Prompt user to select an department to remove
+        const { department } = await inquirer.prompt(Questions.question11.returnString());
         
         // Prompt "When you remove a department from this database, you cannot retrieve it. Do you still wish to remove this department?"
 
+        
         // If yes, perform SQL deletion of record
         if (confirmYN === "Yes") {
             // Query the department.id of the department to be removed

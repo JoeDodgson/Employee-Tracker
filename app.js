@@ -399,6 +399,7 @@ async function addDepartment() {
         const addDepartment = await sqlQueries.insertRecord("department", colValues);
 
         // Display confirmation to state that department has been added to database
+        console.log(`\nThe new ${name} department was successfully added\n`);
 
         // Display full list of departments (so user can see their new department has been added)
     }

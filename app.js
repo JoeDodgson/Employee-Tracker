@@ -358,7 +358,7 @@ async function removeRole() {
         Questions.question9a.choices = await sqlQueries.selectTableCol("title", "role");
 
         // Prompt user to select an role
-        const { employee } = await inquirer.prompt(Questions.question9a.returnString());
+        const { role } = await inquirer.prompt(Questions.question9a.returnString());
         
         // Prompt "When you remove a role from this database, you cannot retrieve it. Do you still wish to remove this role?"
         const { confirmYN } = await inquirer.prompt(Questions.question9b.returnString());
@@ -369,8 +369,10 @@ async function removeRole() {
             const roleId = await sqlQueries.returnRoleId(role);
             
             // Amend role_id to null for records where employee's role has been removed
+
             
             // Delete the record of the role from the role table
+            
 
             // Display confirmation to state that role has been removed from database
         }

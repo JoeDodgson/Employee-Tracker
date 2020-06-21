@@ -431,9 +431,32 @@ async function addDepartment() {
 }
 
 async function removeDepartment() {
-    console.log("removeDepartment function" );
-    
-    selectAction();
+    try {
+        // Query the database for departments. Use departments as question choices
+
+        // Prompt user to select an department to remove
+        
+        // Prompt "When you remove a department from this database, you cannot retrieve it. Do you still wish to remove this department?"
+
+        // If yes, perform SQL deletion of record
+        if (confirmYN === "Yes") {
+            // Query the department.id of the department to be removed
+                        
+            // Delete the record of the department from the department table
+
+            // Display confirmation to state that department has been removed from database
+        }
+        
+        // If no, confirm that the employee was not removed from the database
+        else {
+        }
+
+        // Display full list of departments (so user can see their new department has been removed)
+        viewdepartments();
+    }
+    catch (error) {
+        console.log("ERROR - app.js - removeDepartment(): " + error);
+    }
 }
 
 async function viewDepartmentSalary() {

@@ -123,7 +123,7 @@ async function viewEmployeesByDepartment() {
         
         // Display list of employees in the selected department using cTable formatting
         const employeesInDepartmentTable = cTable.getTable(employeesInDepartment);
-        console.log(`List of employees in the ${department} department:\n\n` + employeesInDepartmentTable);
+        console.log(`\nList of employees in the ${department} department:\n\n` + employeesInDepartmentTable);
         
         selectAction();
     }
@@ -145,7 +145,7 @@ async function viewEmployeesByManager() {
         
         // Display list of employees who work for the selected manager using cTable formatting
         const employeesUnderManagerTable = cTable.getTable(employeesUnderManager);
-        console.log(`List of employees who work for ${manager}:\n\n` + employeesUnderManagerTable);
+        console.log(`\nList of employees who work for ${manager}:\n\n` + employeesUnderManagerTable);
         
         selectAction();
     }
@@ -190,7 +190,7 @@ async function addEmployee() {
         const addEmployee = await sqlQueries.insertRecord("employee", colValues);
 
         // Display confirmation to state that employee has been added to database
-        console.log(`${newEmployee.firstName} ${newEmployee.lastName} has been added to the database`);
+        console.log(`\n${newEmployee.firstName} ${newEmployee.lastName} has been added to the database\n`);
 
         // Display full list of employees (so user can see their new employee has been added)
         viewAllEmployees();
@@ -220,12 +220,12 @@ async function removeEmployee() {
             const deleteEmployee = await sqlQueries.deleteRecord("employee", "id", employeeId);
 
             // Display confirmation to state that employee has been removed from database
-            console.log(`${employee} was removed from the database\n`);
+            console.log(`\n${employee} was removed from the database\n`);
         }
 
         // If no, confirm that the employee was not removed from the database
         else {
-            console.log(`${employee} was not removed from the database\n`);
+            console.log(`\n${employee} was not removed from the database\n`);
         }
 
         // Display full list of employees (so user can see their new employee has been added)
@@ -311,7 +311,7 @@ async function viewRoles() {
         
         // Display list of roles using cTable formatting
         const rolesDetailsTable = cTable.getTable(rolesDetails);
-        console.log(`List of all roles:\n\n` + rolesDetailsTable);
+        console.log(`\nList of all roles:\n\n` + rolesDetailsTable);
         
         // Return to selectAction function
         selectAction();
@@ -396,7 +396,7 @@ async function viewDepartments() {
         
         // Display list of roles using cTable formatting
         const departmentsTable = cTable.getTable(departments);
-        console.log(`List of all departments:\n\n` + departmentsTable);
+        console.log(`\nList of all departments:\n\n` + departmentsTable);
         
         // Return to selectAction function
         selectAction();

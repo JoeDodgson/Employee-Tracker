@@ -36,12 +36,12 @@ function openConnection() {
 // View all function displays all employees from the employees table
 async function viewAllEmployees() {
     try {
-        // Left join role and department tables onto the employee table
-        const employeesData = await queryAsync("SELECT A.id, A.first_name, A.last_name, title, salary, CONCAT(B.first_name, ' ', B.last_name) AS manager_name, name AS department FROM employee AS A LEFT JOIN employee AS B ON A.manager_id = B.id LEFT JOIN role ON A.role_id = role.id  LEFT JOIN department ON role.department_id = department.id ORDER BY A.id;");
+        // Query database to left join role and department tables onto the employee table
+        const employeesData = await sqlQueries.employeesDetails();
         
         // Display full list of employees using cTable formatting
         const employeesTable = cTable.getTable(employeesData);
-        console.log("Full list of employees:\n" + employeesTable);
+        console.log("\nFull list of employees:\n\n" + employeesTable);
 
         selectAction();
     }

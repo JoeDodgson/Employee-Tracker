@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
 const queryAsync = util.promisify(connection.query).bind(connection);
 
 const sqlQueries = {
-    // Database query for one column in one table
+    // End connection
     endConnection: () => {
         connection.end();
     },
@@ -92,14 +92,14 @@ const sqlQueries = {
         }
     },
     
-    // Database query for all roles
-    rolesDetails: async () => {
+    // Database query for all employees
+    employeesDetails: async () => {
         try {
-            const data = await queryAsync(`SELECT title, salary, department.name AS 'department name' FROM role LEFT JOIN department ON role.department_id = department.id;`);
+            const data = await queryAsync(`SELECT A.id, A.first_name, A.last_name, title, salary, CONCAT(B.first_name, ' ', B.last_name) AS manager_name, name AS department FROM employee AS A LEFT JOIN employee AS B ON A.manager_id = B.id LEFT JOIN role ON A.role_id = role.id  LEFT JOIN department ON role.department_id = department.id ORDER BY A.id;`);
             return data;
         }
         catch (error) {
-            console.log("ERROR - sql-queries.js - sqlQueries.rolesDetails(): " + error);
+            console.log("ERROR - sql-queries.js - sqlQueries.employeesDetails(): " + error);
         }
     },
     

@@ -306,12 +306,12 @@ async function updateEmployeeManager() {
 
 async function viewRoles() {
     try { 
-        // Query the database for all roles
-        const allRoles = await sqlQueries.allRoles();
+        // Query the database for all roles, including salary and department
+        const rolesDetails = await sqlQueries.rolesDetails();
         
         // Display list of roles using cTable formatting
-        const allRolesTable = cTable.getTable(allRoles);
-        console.log(`List of all roles:\n\n` + allRolesTable);
+        const rolesDetailsTable = cTable.getTable(rolesDetails);
+        console.log(`List of all roles:\n\n` + rolesDetailsTable);
         
         selectAction();
     }
@@ -354,7 +354,8 @@ async function addRole() {
 
 async function removeRole() {
     try {
-        // Query the database for role. Use role as question choices
+        // Query the database for roles. Use roles as question choices
+
 
         // Prompt user to select an role
         

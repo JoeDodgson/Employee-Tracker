@@ -388,8 +388,15 @@ async function removeRole() {
 async function addDepartment() {
     try {
         // Prompt the user to input the title of the new department
+        const { name } = await inquirer.prompt(Questions.question10.returnString());
+                        
+        // Assign record values into colValues object
+        const colValues = {
+            name: name
+        };
         
         // Insert new entry into the database
+        const addDepartment = await sqlQueries.insertRecord("department", colValues);
 
         // Display confirmation to state that department has been added to database
 

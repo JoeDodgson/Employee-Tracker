@@ -372,7 +372,7 @@ async function removeRole() {
 
             
             // Delete the record of the role from the role table
-            
+            const deleteRole = await sqlQueries.deleteRecord("role", "id", roleId);            
 
             // Display confirmation to state that role has been removed from database
         }

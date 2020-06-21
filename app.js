@@ -355,7 +355,7 @@ async function addRole() {
 async function removeRole() {
     try {
         // Query the database for roles. Use roles as question choices
-
+        Questions.question9a.choices = await sqlQueries.selectTableCol("title", "role");
 
         // Prompt user to select an role
         

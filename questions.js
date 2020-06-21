@@ -50,6 +50,7 @@ Questions.question7b = Questions.question3;
 Questions.question8a = new PromptQuestion("Enter the new role title", "title");
 Questions.question8b = new PromptQuestion("Enter the new role salary (£s)", "salary");
 Questions.question8c = new ChoiceQuestion("Select the department for the new role", "department", []);
+Questions.question9a = new ChoiceQuestion("Select a role to remove", "role", []);
 
 // Export classes
 module.exports = {

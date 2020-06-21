@@ -457,7 +457,7 @@ async function removeDepartment() {
         else {
             console.log(`\nThe ${department} department was not removed\n`);
         }
-
+        
         // Display full list of departments (so user can see their new department has been removed)
         viewDepartments();
     }
@@ -470,16 +470,18 @@ async function viewDepartmentSalary() {
     try {
         // Query the database for departments. Use departments as question choices
         Questions.question12.choices = await sqlQueries.selectTableCol("name", "department");
-
+        
         // Prompt user to select an department to see salary
         const { department } = await inquirer.prompt(Questions.question12.returnString());
         
         // Query the department.id of the department to see salary
         const departmentId = await sqlQueries.returnDepartmentId(department);
-                    
+        
         // Query the database for total salary
-
+        const totalDepartmentSalary = await sqlQueries.totalDepartmentSalary(departmentId);
+        
         // Display total salary of department in a console log
+        console.log(`\nThe total salary of the ${department} department is £${totalDepartmentSalary}\n`);
 
         // Return to selectAction function
         selectAction();

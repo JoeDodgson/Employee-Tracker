@@ -367,18 +367,17 @@ async function removeRole() {
         if (confirmYN === "Yes") {
             // Query the role.id of the role to be removed
             const roleId = await sqlQueries.returnRoleId(role);
-            
-            // Amend role_id to null for records where employee's role has been removed
-
-            
+                        
             // Delete the record of the role from the role table
             const deleteRole = await sqlQueries.deleteRecord("role", "id", roleId);            
 
             // Display confirmation to state that role has been removed from database
+            console.log(`\nThe role of ${role} was successfully removed from the database\n`);
         }
-
+        
         // If no, confirm that the employee was not removed from the database
         else {
+            console.log(`\nThe role of ${role} was not removed from the database\n`);
         }
 
         // Display full list of roles (so user can see their new role has been added)

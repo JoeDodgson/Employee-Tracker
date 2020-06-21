@@ -28,6 +28,7 @@ A node.js application which manages an SQL database of employee, role and depart
 2.2. Open your terminal and navigate to the downloaded repository
 
 2.3. Type the following command and and hit enter:
+
 `npm install`
 
 2.4. Run a SQL server hosting application (like SQL server or XAMPP)

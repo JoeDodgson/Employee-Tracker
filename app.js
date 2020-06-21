@@ -330,7 +330,7 @@ async function addRole() {
         const newRole = await inquirer.prompt([Questions.question8a.returnString(), Questions.question8b.returnString(), Questions.question8c.returnString()]);
 
         // Query the database to find the corresponding department id
-        newRole.departmentId = sqlQueries.returnDepartmentId(newRole.department);
+        newRole.departmentId = await sqlQueries.returnDepartmentId(newRole.department);
                 
         // Assign record values into colValues object
         const colValues = {
@@ -431,9 +431,39 @@ async function addDepartment() {
 }
 
 async function removeDepartment() {
-    console.log("removeDepartment function" );
-    
-    selectAction();
+    try {
+        // Query the database for departments. Use departments as question choices
+        Questions.question11a.choices = await sqlQueries.selectTableCol("name", "department");
+
+        // Prompt user to select an department to remove
+        const { department } = await inquirer.prompt(Questions.question11a.returnString());
+        
+        // Prompt "When you remove a department from this database, you cannot retrieve it. Do you still wish to remove this department?"
+        const { confirmYN } = await inquirer.prompt(Questions.question11b.returnString());
+
+        // If yes, perform SQL deletion of record
+        if (confirmYN === "Yes") {
+            // Query the department.id of the department to be removed
+            const departmentId = await sqlQueries.returnDepartmentId(department);
+                        
+            // Delete the record of the department from the department table
+            const deleteDepartment = await sqlQueries.deleteRecord("department", "id", departmentId);
+
+            // Display confirmation to state that department has been removed from database
+            console.log(`\nThe ${department} department was successfully removed\n`);
+        }
+        
+        // If no, confirm that the employee was not removed from the database
+        else {
+            console.log(`\nThe ${department} department was not removed\n`);
+        }
+
+        // Display full list of departments (so user can see their new department has been removed)
+        viewDepartments();
+    }
+    catch (error) {
+        console.log("ERROR - app.js - removeDepartment(): " + error);
+    }
 }
 
 async function viewDepartmentSalary() {

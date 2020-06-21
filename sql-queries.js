@@ -184,18 +184,6 @@ const sqlQueries = {
         }
     },
 
-    // Database query for managerId based on manager name
-    returnManagerId: async manager => {
-        try {
-            const data = await queryAsync(`SELECT id AS managerId FROM employee WHERE CONCAT(first_name, ' ', last_name) = '${manager}'`);
-            const managerId = data[0].managerId;
-            return managerId;
-        }
-        catch (error) {
-            console.log("ERROR - sql-queries.js - sqlQueries.returnManagerId(): " + error);
-        }
-    },
-
     // Database query for departmentId based on department name
     returnDepartmentId: async department => {
         try {

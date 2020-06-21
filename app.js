@@ -175,7 +175,7 @@ async function addEmployee() {
         }
         else {
             // Query the database to find the corresponding manager id
-            newEmployee.managerId = await sqlQueries.returnManagerId(newEmployee.manager);
+            newEmployee.managerId = await sqlQueries.returnEmployeeId(newEmployee.manager);
         }
         
         // Assign record values into colValues object

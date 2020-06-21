@@ -467,9 +467,23 @@ async function removeDepartment() {
 }
 
 async function viewDepartmentSalary() {
-    console.log("viewDepartmentSalary function" );
-    
-    selectAction();
+    try {
+        // Query the database for departments. Use departments as question choices
+
+        // Prompt user to select an department to see salary
+        
+        // Query the department.id of the department to see salary
+                    
+        // Query the database for total salary
+
+        // Display total salary of department in a console log
+
+        // Return to selectAction function
+        selectAction();
+    }
+    catch (error) {
+        console.log("ERROR - app.js - viewDepartmentSalary(): " + error);
+    }
 }
 
 // Displays exit message and ends database connection 

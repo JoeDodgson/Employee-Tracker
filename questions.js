@@ -53,6 +53,7 @@ Questions.question8c = new ChoiceQuestion("Select the department for the new rol
 Questions.question9a = new ChoiceQuestion("Select a role to remove", "role", []);
 Questions.question9b = new ChoiceQuestion("When you remove a role from this database, you cannot retrieve it. Do you still wish to remove this role?", "confirmYN", ["Yes", "No"]);
 Questions.question10 = new PromptQuestion("Enter the new department name", "name");
+Questions.question11 = new ChoiceQuestion("Select a department to remove", "department", []);
 
 // Export classes
 module.exports = {

@@ -433,6 +433,7 @@ async function addDepartment() {
 async function removeDepartment() {
     try {
         // Query the database for departments. Use departments as question choices
+        Questions.question9a.choices = await sqlQueries.selectTableCol("name", "department");
 
         // Prompt user to select an department to remove
         

@@ -89,15 +89,18 @@ async function selectAction() {
                 removeRole();
                 break;
             case Questions.question1.choices[10]:
-                addDepartment();
+                viewDepartments();
                 break;
             case Questions.question1.choices[11]:
-                removeDepartment();
+                addDepartment();
                 break;
             case Questions.question1.choices[12]:
-                viewDepartmentSalary();
+                removeDepartment();
                 break;
             case Questions.question1.choices[13]:
+                viewDepartmentSalary();
+                break;
+            case Questions.question1.choices[14]:
                 exit();
                 break;
         }
@@ -378,17 +381,41 @@ async function removeRole() {
         }
 
         // Display full list of roles (so user can see their new role has been added)
-        // viewAllRoles();
+        viewRoles();
     }
     catch (error) {
         console.log("ERROR - app.js - removeRole(): " + error);
     }
 }
 
-async function addDepartment() {
-    console.log("addDepartment function" );
+async function viewDepartments() {
+    console.log("viewDepartments function" );
     
     selectAction();
+}
+
+async function addDepartment() {
+    try {
+        // Prompt the user to input the title of the new department
+        const { name } = await inquirer.prompt(Questions.question10.returnString());
+                        
+        // Assign record values into colValues object
+        const colValues = {
+            name: name
+        };
+        
+        // Insert new entry into the database
+        const addDepartment = await sqlQueries.insertRecord("department", colValues);
+
+        // Display confirmation to state that department has been added to database
+        console.log(`\nThe new ${name} department was successfully added\n`);
+
+        // Display full list of departments (so user can see their new department has been added)
+        viewDepartments();
+    }
+    catch (error) {
+        console.log("ERROR - app.js - addDepartment(): " + error);        
+    }
 }
 
 async function removeDepartment() {

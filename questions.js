@@ -34,7 +34,7 @@ class ChoiceQuestion extends PromptQuestion {
 // Generate questions which will be used in app.js
 const Questions = {};
 
-Questions.question1 = new ChoiceQuestion("What would you like to do?", "action", ["View all employees", "View all employees by department", "View all employees by manager", "Add employee", "Remove employee", "Update employee role", "Update employee manager", "View roles", "Add role", "Remove role", "Add department", "Remove department", "View total salary for a department", "Exit"]);
+Questions.question1 = new ChoiceQuestion("What would you like to do?", "action", ["View all employees", "View all employees by department", "View all employees by manager", "Add employee", "Remove employee", "Update employee role", "Update employee manager", "View roles", "Add role", "Remove role", "View departments", "Add department", "Remove department", "View total salary for a department", "Exit"]);
 Questions.question2 = new ChoiceQuestion("Select a department", "department", []);
 Questions.question3 = new ChoiceQuestion("Select a manager", "manager", []);
 Questions.question4a = new PromptQuestion("Enter the new employee's first name", "firstName");
@@ -52,6 +52,7 @@ Questions.question8b = new PromptQuestion("Enter the new role salary (£s)", "sa
 Questions.question8c = new ChoiceQuestion("Select the department for the new role", "department", []);
 Questions.question9a = new ChoiceQuestion("Select a role to remove", "role", []);
 Questions.question9b = new ChoiceQuestion("When you remove a role from this database, you cannot retrieve it. Do you still wish to remove this role?", "confirmYN", ["Yes", "No"]);
+Questions.question10 = new PromptQuestion("Enter the new department name", "name");
 
 // Export classes
 module.exports = {

@@ -346,7 +346,7 @@ async function addRole() {
         console.log(`\nThe new role of ${newRole.title} was successfully added\n`);
 
         // Display full list of roles (so user can see their new role has been added)
-        viewRoles();
+        // viewRoles();
     }
     catch (error) {
         console.log("ERROR - app.js - addRole(): " + error);        

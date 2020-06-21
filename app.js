@@ -392,7 +392,7 @@ async function removeRole() {
 async function viewDepartments() {
     try { 
         // Query the database for all roles, including salary and department
-        const departments = await sqlQueries.selectTableCol();
+        const departments = await sqlQueries.selectTableCol("name", "department");
         
         // Display list of roles using cTable formatting
         const departmentsTable = cTable.getTable(departments);

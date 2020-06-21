@@ -353,9 +353,34 @@ async function addRole() {
 }
 
 async function removeRole() {
-    console.log("removeRole function" );
-    
-    selectAction();
+    try {
+        // Query the database for role. Use role as question choices
+
+        // Prompt user to select an role
+        
+        // Prompt "When you remove a role from this database, you cannot retrieve it. Do you still wish to remove this employee?"
+
+        // If yes, perform SQL deletion of record
+        if (confirmYN === "Yes") {
+            // Query the role.id of the role to be removed
+            
+            // Amend role_id to null for records where employee's role has been removed
+            
+            // Delete the record of the role from the role table
+
+            // Display confirmation to state that role has been removed from database
+        }
+
+        // If no, confirm that the employee was not removed from the database
+        else {
+        }
+
+        // Display full list of roles (so user can see their new role has been added)
+        viewAllRoles();
+    }
+    catch (error) {
+        console.log("ERROR - app.js - removeRole(): " + error);
+    }
 }
 
 async function addDepartment() {

@@ -313,6 +313,7 @@ async function viewRoles() {
         const rolesDetailsTable = cTable.getTable(rolesDetails);
         console.log(`List of all roles:\n\n` + rolesDetailsTable);
         
+        // Return to selectAction function
         selectAction();
     }
     catch (error) {
@@ -380,7 +381,7 @@ async function removeRole() {
             console.log(`\nThe role of ${role} was not removed from the database\n`);
         }
 
-        // Display full list of roles (so user can see their new role has been added)
+        // Display full list of roles (so user can see their new role has been removed)
         viewRoles();
     }
     catch (error) {
@@ -389,9 +390,17 @@ async function removeRole() {
 }
 
 async function viewDepartments() {
-    console.log("viewDepartments function" );
-    
-    selectAction();
+    try { 
+        // Query the database for all roles, including salary and department
+        
+        // Display list of roles using cTable formatting
+        
+        // Return to selectAction function
+        selectAction();
+    }
+    catch (error) {
+        console.log("ERROR - app.js - viewDepartments(): " + error);
+    }
 }
 
 async function addDepartment() {

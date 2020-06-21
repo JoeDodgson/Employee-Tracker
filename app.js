@@ -89,15 +89,18 @@ async function selectAction() {
                 removeRole();
                 break;
             case Questions.question1.choices[10]:
-                addDepartment();
+                viewDepartments();
                 break;
             case Questions.question1.choices[11]:
-                removeDepartment();
+                addDepartment();
                 break;
             case Questions.question1.choices[12]:
-                viewDepartmentSalary();
+                removeDepartment();
                 break;
             case Questions.question1.choices[13]:
+                viewDepartmentSalary();
+                break;
+            case Questions.question1.choices[14]:
                 exit();
                 break;
         }
@@ -385,6 +388,12 @@ async function removeRole() {
     }
 }
 
+async function viewDepartments() {
+    console.log("viewDepartments function" );
+    
+    selectAction();
+}
+
 async function addDepartment() {
     try {
         // Prompt the user to input the title of the new department
@@ -402,6 +411,7 @@ async function addDepartment() {
         console.log(`\nThe new ${name} department was successfully added\n`);
 
         // Display full list of departments (so user can see their new department has been added)
+        viewDepartments();
     }
     catch (error) {
         console.log("ERROR - app.js - addDepartment(): " + error);        

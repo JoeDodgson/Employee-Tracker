@@ -378,7 +378,7 @@ async function removeRole() {
         }
 
         // Display full list of roles (so user can see their new role has been added)
-        // viewAllRoles();
+        viewRoles();
     }
     catch (error) {
         console.log("ERROR - app.js - removeRole(): " + error);
@@ -386,9 +386,18 @@ async function removeRole() {
 }
 
 async function addDepartment() {
-    console.log("addDepartment function" );
-    
-    selectAction();
+    try {
+        // Prompt the user to input the title of the new department
+        
+        // Insert new entry into the database
+
+        // Display confirmation to state that department has been added to database
+
+        // Display full list of departments (so user can see their new department has been added)
+    }
+    catch (error) {
+        console.log("ERROR - app.js - addDepartment(): " + error);        
+    }
 }
 
 async function removeDepartment() {

@@ -395,6 +395,8 @@ async function viewDepartments() {
         const departments = await sqlQueries.selectTableCol();
         
         // Display list of roles using cTable formatting
+        const departmentsTable = cTable.getTable(departments);
+        console.log(`List of all departments:\n\n` + departmentsTable);
         
         // Return to selectAction function
         selectAction();

@@ -2,57 +2,55 @@
 
 ## Table of contents:
 
-[Description](##description)
+[Description](#description)
 
-[Installation](##installation)
+[Installation](#installation)
 
-[Usage](##usage)
+[Usage](#usage)
 
-[Author](##author)
+[Author](#author)
 
-[Contributing](##contributing)
+[Contributing](#contributing)
 
-[License](##license)
+[License](#license)
 
-[Tests](##tests)
+[Tests](#tests)
 
-[Contact](##contact)
-
+[Contact](#contact)
 
 ## Description
 A node.js application which manages an SQL database of employee, role and department data
 
 ## Installation
-2.1. Download the code repository
+1. Download the code repository
 
-2.2. Open your terminal and navigate to the downloaded repository
+2. Open your terminal and navigate to the downloaded repository
 
-2.3. Type the following command and and hit enter:
+3. Type the following command and and hit enter:
 
 `npm install`
 
-2.4. Run a SQL server hosting application (like SQL server or XAMPP)
+4. Run a SQL server hosting application (like SQL server or XAMPP)
 
-2.5. Open MySQL workbench and create a new database connection
+5. Open MySQL workbench and create a new database connection
 
-2.6. Open your database connection then go to File/Open SQL Script, navigate to the downloaded repository and open schema.SQL. Then execute all of the schema.SQL script.
+6. Open your database connection then go to File/Open SQL Script, navigate to the downloaded repository and open schema.SQL. Then execute all of the schema.SQL script.
 
-2.7. OPTIONAL: To populate your database with test data, then go to File/Open SQL Script and navigate to the downloaded repository and open seeds.sql. Then execute all of the schema.SQL script.
-
+7. OPTIONAL: To populate your database with test data, then go to File/Open SQL Script and navigate to the downloaded repository and open seeds.sql. Then execute all of the schema.SQL script.
 
 ## Usage
+**This is a command line application so there is no deployed URL**
+
 To run the application, open your terminal and navigate to the downloaded repository. Then type the following command and hit enter:
 
 `node app.js`
 
 Follow the on screen prompts in the terminal to manage your employee database. You can add, remove and update employees, roles and departments.
 
-
 ## Author
 Joe Dodgson
 
 Github username: JoeDodgson
-
 
 ## Contributing
 By Joe Dodgson only
